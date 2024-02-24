@@ -1,5 +1,8 @@
 @apiulr = http://localhost:8180/api
 
+# =========================================
+# USERS
+
 ### GET ALL USERS
 GET {{apiulr}}/user
 
@@ -35,25 +38,29 @@ Content-Type: application/json
 GET {{apiulr}}/transaction
 
 ### GET /
-GET {{apiulr}}/transaction/1
+GET {{apiulr}}/transaction/4
 
 ### POST /
 POST {{apiulr}}/transaction
 Content-Type: application/json
 
 {
-    "payer_id":"2",
-    "payee_id":"1",
-    "amount":52032
+    "payer_id":"10",
+    "payee_id":"11",
+    "amount":5000
 }
 
 ### UPDATE /
-PUT {{apiulr}}/transaction/1
+PUT {{apiulr}}/transaction/4
 Content-Type: application/json
 
 {
-    "confirmed":1
+    "confirmed":0
 }
+
+### TO CONFIRM /
+PUT {{apiulr}}/transaction/toconfirm/4
+Content-Type: application/json
 
 # =========================================
 # WALLETS
@@ -62,12 +69,12 @@ Content-Type: application/json
 GET {{apiulr}}/wallet
 
 ### GET /
-GET {{apiulr}}/wallet/1
+GET {{apiulr}}/wallet/10
 
 ### UPDATE /
-PUT {{apiulr}}/wallet/2
+PUT {{apiulr}}/wallet/11
 Content-Type: application/json
 
 {
-    "amount":0
+    "amount":10000
 }

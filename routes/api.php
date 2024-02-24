@@ -32,3 +32,4 @@ Route::get('/wallet/getByUser/{user_id}', [WalletController::class, 'getWalletBy
 Route::put('/wallet/{wallet}', [WalletController::class, 'update']);
 
 Route::resource('/transaction', TransactionController::class);
+Route::put('/transaction/toconfirm/{transaction}', [TransactionController::class, 'toConfirmTransaction']);

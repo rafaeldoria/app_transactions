@@ -34,12 +34,7 @@ class User extends Model
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-
-    public function comments(): HasMany
-    {
-        return $this->hasMany(Document::class);
-    }
-
+    
     public function wallet(): HasOne
     {
         return $this->hasOne(Wallet::class);

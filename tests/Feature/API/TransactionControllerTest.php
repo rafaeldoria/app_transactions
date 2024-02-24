@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Transaction;
 use Illuminate\Support\Str;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -52,14 +53,43 @@ class TransactionControllerTest extends TestCase
      */
     public function test_post_transaction_endpoint(): void
     {
-        $user_id_payee = User::factory()->create()->id;
-        $user_id_payer = User::factory()->create()->id;
+        $user_payer = [
+            'name' => fake()->name(),
+            'email' => fake()->unique()->safeEmail(),
+            'type' => User::__COMMOM__,
+            'email_verified_at' => now(),
+            'password' => Hash::make('11223344'),
+            'remember_token' => Str::random(10),
+        ];
+        $user_payer = $this->postJson('api/user', $user_payer);
+        $wallet = $this->getJson('api/wallet/getByUser/' . $user_payer['id']);
+        $updatedWallet = [
+            'user_id' => $user_payer['id'],
+            'amount' => 52525
+        ];
+        $this->json('PUT', 'api/wallet/' . $wallet['id'], $updatedWallet);
+
+        $user_payee = [
+            'name' => fake()->name(),
+            'email' => fake()->unique()->safeEmail(),
+            'type' => User::__COMMOM__,
+            'email_verified_at' => now(),
+            'password' => Hash::make('11223344'),
+            'remember_token' => Str::random(10),
+        ];
+        $user_payee = $this->postJson('api/user', $user_payee);
+        $wallet = $this->getJson('api/wallet/getByUser/' . $user_payee['id']);
+        $updatedWallet = [
+            'user_id' => $user_payee['id'],
+            'amount' => 12121
+        ];
+        $this->json('PUT', 'api/wallet/' . $wallet['id'], $updatedWallet);
 
         $transactionData = [
-            'amount' => fake()->randomNumber(5, true),
+            'amount' => 10000,
             'confirmed' => 0,
-            'payer_id' => $user_id_payer,
-            'payee_id' => $user_id_payee
+            'payer_id' => $user_payer['id'],
+            'payee_id' => $user_payee['id']
         ];
 
         $response = $this->postJson('api/transaction', $transactionData);
@@ -68,8 +98,8 @@ class TransactionControllerTest extends TestCase
         $this->assertDatabaseHas('transactions', [
             'amount' => $transactionData['amount'],
             'confirmed' => 0,
-            'payer_id' => $user_id_payer,
-            'payee_id' => $user_id_payee
+            'payer_id' => $user_payer['id'],
+            'payee_id' => $user_payee['id']
         ]);
 
         $transaction = $response->json();
@@ -80,7 +110,7 @@ class TransactionControllerTest extends TestCase
     /**
      *  Test updating an API transaction
      */
-    public function test_update_user_endpoint(): void
+    public function test_update_transaction_endpoint(): void
     {
         $transaction = Transaction::factory()->create();
         $updatedTransaction = [
@@ -98,5 +128,15 @@ class TransactionControllerTest extends TestCase
         $transaction = $this->getJson('api/transaction/' . $transaction->id);
         $this->assertEquals($updatedTransaction['amount'], $transaction['amount']);
         $this->assertEquals($transaction['confirmed'], 0);
+    }
+
+     /**
+     *  Test to confirm transaction
+     */
+    public function test_to_confirm_transaction_endpoint(): void
+    {
+        $transaction = Transaction::factory()->create();
+        $response = $this->json('PUT', 'api/transaction/toconfirm/' . $transaction->id);
+        $response->assertStatus(Response::HTTP_OK);
     }
 }

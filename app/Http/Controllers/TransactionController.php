@@ -31,14 +31,19 @@ class TransactionController extends Controller
 
     public function store(Request $request) : JsonResponse
     {
-        $this->transactionService->createTransaction($request);
-        $transaction = $this->transaction->create($request->all());
+        $transaction = $this->transactionService->createTransaction($request);
         return response()->json($transaction, Response::HTTP_CREATED);
     }
 
     public function update(Transaction $transaction, Request $request) : JsonResponse
     {
         $transaction->update($request->all());
+        return response()->json($transaction);
+    }
+
+    public function toConfirmTransaction(Transaction $transaction) : JsonResponse
+    {
+        $transaction = $this->transactionService->toConfirmTransaction($transaction);
         return response()->json($transaction);
     }
 }

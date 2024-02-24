@@ -1,0 +1,23 @@
+@apiulr = http://localhost:8180/api
+
+### GET ALL USERS
+GET {{apiulr}}/user
+
+### GET USER BY ID
+GET {{apiulr}}/user/1
+
+### GET /
+GET {{apiulr}}
+
+### POST /
+POST {{apiulr}}/user
+Content-Type: application/json
+
+{
+    "name":"Jony Marco",
+    "email":"jonymarco@teste.com",
+    "type":1,
+    "password":123456
+}
+
+

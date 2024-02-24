@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WalletController;
 use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\MailController;
 use App\Http\Controllers\TransactionController;
 
 /*
@@ -33,3 +34,5 @@ Route::put('/wallet/{wallet}', [WalletController::class, 'update']);
 
 Route::resource('/transaction', TransactionController::class);
 Route::put('/transaction/toconfirm/{transaction}', [TransactionController::class, 'toConfirmTransaction']);
+
+Route::get('/mail/transaction/confirmed/{user}', [MailController::class, 'confirmedTransaction']);

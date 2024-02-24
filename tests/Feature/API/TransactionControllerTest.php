@@ -135,8 +135,53 @@ class TransactionControllerTest extends TestCase
      */
     public function test_to_confirm_transaction_endpoint(): void
     {
-        $transaction = Transaction::factory()->create();
-        $response = $this->json('PUT', 'api/transaction/toconfirm/' . $transaction->id);
-        $response->assertStatus(Response::HTTP_OK);
+        $user_payer = [
+            'name' => fake()->name(),
+            'email' => fake()->unique()->safeEmail(),
+            'type' => User::__COMMOM__,
+            'email_verified_at' => now(),
+            'password' => Hash::make('11223344'),
+            'remember_token' => Str::random(10),
+        ];
+        $user_payer = $this->postJson('api/user', $user_payer);
+        $wallet = $this->getJson('api/wallet/getByUser/' . $user_payer['id']);
+        $updatedWallet = [
+            'user_id' => $user_payer['id'],
+            'amount' => 52525
+        ];
+        $this->json('PUT', 'api/wallet/' . $wallet['id'], $updatedWallet);
+
+        $user_payee = [
+            'name' => fake()->name(),
+            'email' => fake()->unique()->safeEmail(),
+            'type' => User::__COMMOM__,
+            'email_verified_at' => now(),
+            'password' => Hash::make('11223344'),
+            'remember_token' => Str::random(10),
+        ];
+        $user_payee = $this->postJson('api/user', $user_payee);
+        $wallet = $this->getJson('api/wallet/getByUser/' . $user_payee['id']);
+        $updatedWallet = [
+            'user_id' => $user_payee['id'],
+            'amount' => 12121
+        ];
+        $this->json('PUT', 'api/wallet/' . $wallet['id'], $updatedWallet);
+        $transactionData = [
+            'amount' => 10000,
+            'payer_id' => $user_payer['id'],
+            'payee_id' => $user_payee['id']
+        ];
+
+        $transaction = $this->postJson('api/transaction', $transactionData);
+
+        $response = $this->json('PUT', 'api/transaction/toconfirm/' . $transaction['id']);
+
+        $response->assertStatus(Response::HTTP_OK); 
+        $this->assertDatabaseHas('transactions', [
+            'id' => $transaction['id'],
+            'amount' => $transaction['amount']
+        ]);
+        $transaction = $this->getJson('api/transaction/' . $transaction['id']);
+        $this->assertTrue(($transaction['confirmed']) == 1);
     }
 }

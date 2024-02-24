@@ -22,8 +22,8 @@ class TransactionFactory extends Factory
         return [
             'amount' => fake()->randomNumber(5, true),
             'confirmed' => 0,
-            'payee_id' => function () {return User::factory()->create()->id;},
-            'payer_id' => function () {return User::factory()->create()->id;}
+            'payer_id' => function () {return User::factory()->create()->id;},
+            'payee_id' => function () {return User::factory()->create()->id;}
         ];
     }
 }

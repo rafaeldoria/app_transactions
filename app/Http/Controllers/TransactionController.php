@@ -6,14 +6,17 @@ use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
+use App\Services\TransactionService;
 
 class TransactionController extends Controller
 {
     protected $transaction;
+    protected $transactionService;
 
-    public function __construct(Transaction $transaction)
+    public function __construct(Transaction $transaction,TransactionService $transactionService)
     {
         $this->transaction = $transaction;
+        $this->transactionService = $transactionService;
     }
 
     public function index() : JsonResponse
@@ -28,6 +31,7 @@ class TransactionController extends Controller
 
     public function store(Request $request) : JsonResponse
     {
+        $this->transactionService->createTransaction($request);
         $transaction = $this->transaction->create($request->all());
         return response()->json($transaction, Response::HTTP_CREATED);
     }

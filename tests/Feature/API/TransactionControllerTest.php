@@ -29,8 +29,8 @@ class TransactionControllerTest extends TestCase
 
         $response->assertJson(function (AssertableJson $json){
             $json->whereType('0.id', 'integer');
-            $json->whereType('0.payee_id', 'integer');
             $json->whereType('0.payer_id', 'integer');
+            $json->whereType('0.payee_id', 'integer');
             $json->whereType('0.amount', 'integer');
             $json->whereType('0.confirmed', 'integer');
         });
@@ -58,8 +58,8 @@ class TransactionControllerTest extends TestCase
         $transactionData = [
             'amount' => fake()->randomNumber(5, true),
             'confirmed' => 0,
-            'payee_id' => $user_id_payee,
-            'payer_id' => $user_id_payer
+            'payer_id' => $user_id_payer,
+            'payee_id' => $user_id_payee
         ];
 
         $response = $this->postJson('api/transaction', $transactionData);
@@ -68,8 +68,8 @@ class TransactionControllerTest extends TestCase
         $this->assertDatabaseHas('transactions', [
             'amount' => $transactionData['amount'],
             'confirmed' => 0,
-            'payee_id' => $user_id_payee,
             'payer_id' => $user_id_payer,
+            'payee_id' => $user_id_payee
         ]);
 
         $transaction = $response->json();

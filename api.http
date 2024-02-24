@@ -4,7 +4,7 @@
 GET {{apiulr}}/user
 
 ### GET USER BY ID
-GET {{apiulr}}/user/1
+GET {{apiulr}}/user/2
 
 ### GET /
 GET {{apiulr}}
@@ -20,4 +20,54 @@ Content-Type: application/json
     "password":123456
 }
 
+### UPDATE /
+PUT {{apiulr}}/user/2
+Content-Type: application/json
 
+{
+    "type":2
+}
+
+# =========================================
+# TRANSACTIONS
+
+### GET /
+GET {{apiulr}}/transaction
+
+### GET /
+GET {{apiulr}}/transaction/1
+
+### POST /
+POST {{apiulr}}/transaction
+Content-Type: application/json
+
+{
+    "payer_id":"2",
+    "payee_id":"1",
+    "amount":52032
+}
+
+### UPDATE /
+PUT {{apiulr}}/transaction/1
+Content-Type: application/json
+
+{
+    "confirmed":1
+}
+
+# =========================================
+# WALLETS
+
+### GET /
+GET {{apiulr}}/wallet
+
+### GET /
+GET {{apiulr}}/wallet/1
+
+### UPDATE /
+PUT {{apiulr}}/wallet/2
+Content-Type: application/json
+
+{
+    "amount":0
+}

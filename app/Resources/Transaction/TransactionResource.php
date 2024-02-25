@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Resources\Wallet;
+namespace App\Resources\Transaction;
 
 use App\Services\ResponseService;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class WalletResource extends JsonResource
+class TransactionResource extends JsonResource
 {
     private $config;
 
@@ -18,6 +18,7 @@ class WalletResource extends JsonResource
 
     public function toArray($request) : array {
         return [
+            'id' => $this->id,
             'payer_id' => $this->payer_id,
             'payee_id' => $this->payee_id,
             'amount' => $this->amount,

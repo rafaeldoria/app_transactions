@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Transaction;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Http\JsonResponse;
+use App\Services\ResponseService;
 use App\Services\TransactionService;
+use App\Resources\Transaction\TransactionResource;
+use App\Resources\Transaction\TransactionResourceCollection;
 
 class TransactionController extends Controller
 {
@@ -19,31 +20,65 @@ class TransactionController extends Controller
         $this->transactionService = $transactionService;
     }
 
-    public function index() : JsonResponse
+    public function index()
     {
-        return response()->json($this->transaction->all());
+        try {
+            $transactions = $this->transaction->all();
+        } catch (\Throwable |\Exception $e) {
+            return ResponseService::exception('transaction.index', null, $e);
+        }
+        return new TransactionResourceCollection($transactions);
     }
 
-    public function show(Transaction $transaction) : JsonResponse 
+    public function show(Transaction $transaction) 
     {   
-        return response()->json($transaction);
+        try {
+            
+        } catch (\Throwable|\Exception $e) {
+            return ResponseService::exception('transaction.show', null, $e);
+        }
+        return new TransactionResource($transaction,[
+            'type' => 'show',
+            'route' => 'transaction.show'
+        ]);
     }
 
-    public function store(Request $request) : JsonResponse
+    public function store(Request $request)
     {
-        $transaction = $this->transactionService->createTransaction($request);
-        return response()->json($transaction, Response::HTTP_CREATED);
+        try {
+            $transaction = $this->transactionService->createTransaction($request);
+        } catch (\Throwable|\Exception $e) {
+            return ResponseService::exception('transaction.store',null,$e);
+        }
+        return new TransactionResource($transaction,[
+            'type' => 'store',
+            'route' => 'transaction.store'
+        ]);
     }
 
-    public function update(Transaction $transaction, Request $request) : JsonResponse
+    public function update(Transaction $transaction, Request $request)
     {
-        $transaction->update($request->all());
-        return response()->json($transaction);
+        try {
+            $transaction->update($request->all());
+        } catch (\Throwable|\Exception $e) {
+            return ResponseService::exception('transaction.update',$transaction->id,$e);
+        }
+        return new TransactionResource($transaction,[
+            'type' => 'update',
+            'route' => 'transaction.update'
+        ]);
     }
 
-    public function toConfirmTransaction(Transaction $transaction) : JsonResponse
+    public function toConfirmTransaction(Transaction $transaction)
     {
-        $transaction = $this->transactionService->toConfirmTransaction($transaction);
-        return response()->json($transaction);
+        try {
+            $transaction = $this->transactionService->toConfirmTransaction($transaction);
+        } catch (\Throwable|\Exception $e) {
+            return ResponseService::exception('transaction.to_confirm',$transaction->id,$e);
+        }
+        return new TransactionResource($transaction,[
+            'type' => 'update',
+            'route' => 'transaction.to_confirm'
+        ]);
     }
 }

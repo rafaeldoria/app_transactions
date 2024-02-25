@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Resources\User;
+namespace App\Resources\Document;
 
-use App\Models\User;
+use App\Models\Document;
 use App\Services\ResponseService;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserResource extends JsonResource
+class DocumentResource extends JsonResource
 {
     private $config;
 
@@ -20,10 +20,10 @@ class UserResource extends JsonResource
     public function toArray($request) : array {
         return [
             'id' => $this->id,
-            'name' => $this->name,
-            'email' => $this->email,
             'type' => $this->type,
-            'type_description' => User::returnTypeDescriptionUser($this->type)
+            'type_description' => Document::returnTypeDescriptionDocument($this->type),
+            'value' => $this->value,
+            'user_id' => $this->user_id
         ];
     }
 

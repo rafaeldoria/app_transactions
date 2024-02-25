@@ -23,4 +23,12 @@ class Document extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public static function returnTypeDescriptionDocument(int $type): string
+    {
+        return match($type) {
+            self::__TYPE_CPF__ => 'CPF',
+            self::__TYPE_CNPJ__ => 'CNPJ'
+        };
+    }
 }

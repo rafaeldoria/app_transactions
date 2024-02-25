@@ -53,12 +53,11 @@ class User extends Model
         return $this->hasMany(Transaction::class, 'payee_id');
     }
 
-    public static function returnDescriptionTypeUser(int $type): string
+    public static function returnTypeDescriptionUser(int $type): string
     {
         return match($type) {
             self::__COMMOM__ => 'Commom',
             self::__SHOPMAN__ => 'Shopman'
         };
-        
     }
 }

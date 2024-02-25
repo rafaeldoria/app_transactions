@@ -25,7 +25,7 @@ Route::get('/', function (){
 Route::resource('/user', UserController::class);
 
 Route::resource('/document', DocumentController::class);
-Route::get('/document/getByUser/{user_id}', [DocumentController::class, 'getDocumentByUser']);
+Route::get('/document/getByUser/{user_id}', [DocumentController::class, 'getDocumentByUser'])->name('document.get_by_user');
 
 Route::get('/wallet', [WalletController::class, 'index']);
 Route::get('/wallet/{wallet}', [WalletController::class, 'show']);

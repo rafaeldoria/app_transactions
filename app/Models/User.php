@@ -22,8 +22,11 @@ class User extends Model
         'name',
         'email',
         'password',
-        'type',
-        'document'
+        'type'
+    ];
+
+    protected $attributes = [
+        'type' => self::__COMMOM__,
     ];
 
     protected $hidden = [
@@ -48,5 +51,14 @@ class User extends Model
     public function transactionAsPayee(): HasMany
     {
         return $this->hasMany(Transaction::class, 'payee_id');
+    }
+
+    public static function returnDescriptionTypeUser(int $type): string
+    {
+        return match($type) {
+            self::__COMMOM__ => 'Commom',
+            self::__SHOPMAN__ => 'Shopman'
+        };
+        
     }
 }

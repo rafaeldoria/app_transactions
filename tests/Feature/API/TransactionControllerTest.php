@@ -40,7 +40,7 @@ class TransactionControllerTest extends TestCase
     /**
      * Test getting an API transaction.
      */
-    public function test_get_user_endpoint(): void
+    public function test_get_transaction_endpoint(): void
     {
         $transaction = Transaction::factory()->create();
         $response = $this->getJson('api/transaction/' . $transaction->id);
@@ -62,9 +62,9 @@ class TransactionControllerTest extends TestCase
             'remember_token' => Str::random(10),
         ];
         $user_payer = $this->postJson('api/user', $user_payer);
-        $wallet = $this->getJson('api/wallet/getByUser/' . $user_payer['id']);
+        $wallet = $this->getJson('api/wallet/getByUser/' . $user_payer['data']['id']);
         $updatedWallet = [
-            'user_id' => $user_payer['id'],
+            'user_id' => $user_payer['data']['id'],
             'amount' => 52525
         ];
         $this->json('PUT', 'api/wallet/' . $wallet['id'], $updatedWallet);
@@ -78,9 +78,9 @@ class TransactionControllerTest extends TestCase
             'remember_token' => Str::random(10),
         ];
         $user_payee = $this->postJson('api/user', $user_payee);
-        $wallet = $this->getJson('api/wallet/getByUser/' . $user_payee['id']);
+        $wallet = $this->getJson('api/wallet/getByUser/' . $user_payee['data']['id']);
         $updatedWallet = [
-            'user_id' => $user_payee['id'],
+            'user_id' => $user_payee['data']['id'],
             'amount' => 12121
         ];
         $this->json('PUT', 'api/wallet/' . $wallet['id'], $updatedWallet);
@@ -88,8 +88,8 @@ class TransactionControllerTest extends TestCase
         $transactionData = [
             'amount' => 10000,
             'confirmed' => 0,
-            'payer_id' => $user_payer['id'],
-            'payee_id' => $user_payee['id']
+            'payer_id' => $user_payer['data']['id'],
+            'payee_id' => $user_payee['data']['id']
         ];
 
         $response = $this->postJson('api/transaction', $transactionData);
@@ -97,8 +97,8 @@ class TransactionControllerTest extends TestCase
         $response->assertStatus(Response::HTTP_CREATED);
         $this->assertDatabaseHas('transactions', [
             'amount' => $transactionData['amount'],
-            'payer_id' => $user_payer['id'],
-            'payee_id' => $user_payee['id']
+            'payer_id' => $user_payer['data']['id'],
+            'payee_id' => $user_payee['data']['id']
         ]);
 
         $transaction = $response->json();
@@ -143,9 +143,9 @@ class TransactionControllerTest extends TestCase
             'remember_token' => Str::random(10),
         ];
         $user_payer = $this->postJson('api/user', $user_payer);
-        $wallet = $this->getJson('api/wallet/getByUser/' . $user_payer['id']);
+        $wallet = $this->getJson('api/wallet/getByUser/' . $user_payer['data']['id']);
         $updatedWallet = [
-            'user_id' => $user_payer['id'],
+            'user_id' => $user_payer['data']['id'],
             'amount' => 52525
         ];
         $this->json('PUT', 'api/wallet/' . $wallet['id'], $updatedWallet);
@@ -159,16 +159,16 @@ class TransactionControllerTest extends TestCase
             'remember_token' => Str::random(10),
         ];
         $user_payee = $this->postJson('api/user', $user_payee);
-        $wallet = $this->getJson('api/wallet/getByUser/' . $user_payee['id']);
+        $wallet = $this->getJson('api/wallet/getByUser/' . $user_payee['data']['id']);
         $updatedWallet = [
-            'user_id' => $user_payee['id'],
+            'user_id' => $user_payee['data']['id'],
             'amount' => 12121
         ];
         $this->json('PUT', 'api/wallet/' . $wallet['id'], $updatedWallet);
         $transactionData = [
             'amount' => 10000,
-            'payer_id' => $user_payer['id'],
-            'payee_id' => $user_payee['id']
+            'payer_id' => $user_payer['data']['id'],
+            'payee_id' => $user_payee['data']['id']
         ];
 
         $transaction = $this->postJson('api/transaction', $transactionData);

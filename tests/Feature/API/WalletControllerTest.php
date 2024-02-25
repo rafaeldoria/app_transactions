@@ -19,7 +19,7 @@ class WalletControllerTest extends TestCase
     /**
      * Test getting an API all wallets.
      */
-    public function test_get_all_users_endpoint(): void
+    public function test_get_all_wallets_endpoint(): void
     {
         User::factory(3)->create();
         
@@ -67,10 +67,10 @@ class WalletControllerTest extends TestCase
         $userResponse = $this->postJson('api/user', $userData);
 
         $userResponse->assertStatus(Response::HTTP_CREATED);
-        $wallet = $this->getJson('api/wallet/getByUser/' . $userResponse['id']);
+        $wallet = $this->getJson('api/wallet/getByUser/' . $userResponse['data']['id']);
 
         $updatedWallet = [
-            'user_id' => $userResponse['id'],
+            'user_id' => $userResponse['data']['id'],
             'amount' => fake()->randomNumber(5, true)
         ];
         $response = $this->json('PUT', 'api/wallet/' . $wallet['id'], $updatedWallet);

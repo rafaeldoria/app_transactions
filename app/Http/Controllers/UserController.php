@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Services\WalletService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use App\Services\WalletService;
+use App\Services\ResponseService;
 use Illuminate\Http\JsonResponse;
+use App\Resources\User\UserResource;
+use App\Resources\User\UserResourceCollection;
 
 class UserController extends Controller
 {
@@ -17,32 +20,66 @@ class UserController extends Controller
         $this->user = $user;
     }
 
-    public function index() : JsonResponse
+    public function index()
     {
-        return response()->json($this->user->all());
+        try {
+            $users = $this->user->all();
+        } catch (\Throwable |\Exception $e) {
+            return ResponseService::exception('users.get', null, $e);
+        }
+        return new UserResourceCollection($users);
     }
 
-    public function show(User $user) : JsonResponse 
+    public function show(User $user)
     {   
-        return response()->json($user);
+        try {
+            
+        } catch (\Throwable|\Exception $e) {
+            return ResponseService::exception('users.get', null, $e);
+        }
+        return new UserResource($user,[
+            'type' => 'show',
+            'route' => 'user.show'
+        ]);
     }
 
-    public function store(Request $request) : JsonResponse
+    public function store(Request $request)
     {
-        $user = $this->user->create($request->all());
-        (new WalletService)->createWallet($user);
-        return response()->json($user, Response::HTTP_CREATED);
+        try {
+            $user = $this->user->create($request->all());
+            (new WalletService)->createWallet($user);
+        } catch (\Throwable|\Exception $e) {
+            return ResponseService::exception('user.store',null,$e);
+        }
+        return new UserResource($user,[
+            'type' => 'store',
+            'route' => 'user.store'
+        ]);
     }
 
-    public function update(User $user, Request $request) : JsonResponse
+    public function update(User $user, Request $request)
     {
-        $user->update($request->all());
-        return response()->json($user);
+        try {
+            $user->update($request->all());
+        } catch (\Throwable|\Exception $e) {
+            return ResponseService::exception('user.update',$user->id,$e);
+        }
+        return new UserResource($user,[
+            'type' => 'update',
+            'route' => 'user.update'
+        ]);
     }
 
-    public function destroy(User $user) : JsonResponse
+    public function destroy(User $user)
     {
-        $user->delete();
-        return response()->json([], Response::HTTP_NO_CONTENT);
+        try {
+            $user->delete();
+        } catch (\Throwable|\Exception $e) {
+            return ResponseService::exception('user.destroy',$user->id,$e);
+        }
+        return new UserResource($user,[
+            'type' => 'destroy',
+            'route' => 'user.destroy'
+        ]); 
     }
 }

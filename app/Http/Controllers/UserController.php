@@ -25,7 +25,7 @@ class UserController extends Controller
         try {
             $users = $this->user->all();
         } catch (\Throwable |\Exception $e) {
-            return ResponseService::exception('users.get', null, $e);
+            return ResponseService::exception('users.index', null, $e);
         }
         return new UserResourceCollection($users);
     }
@@ -35,7 +35,7 @@ class UserController extends Controller
         try {
             
         } catch (\Throwable|\Exception $e) {
-            return ResponseService::exception('users.get', null, $e);
+            return ResponseService::exception('users.show', null, $e);
         }
         return new UserResource($user,[
             'type' => 'show',

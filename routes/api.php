@@ -27,10 +27,10 @@ Route::resource('/user', UserController::class);
 Route::resource('/document', DocumentController::class);
 Route::get('/document/getByUser/{user_id}', [DocumentController::class, 'getDocumentByUser'])->name('document.get_by_user');
 
-Route::get('/wallet', [WalletController::class, 'index']);
-Route::get('/wallet/{wallet}', [WalletController::class, 'show']);
-Route::get('/wallet/getByUser/{user_id}', [WalletController::class, 'getWalletByUser']);
-Route::put('/wallet/{wallet}', [WalletController::class, 'update']);
+Route::get('/wallet', [WalletController::class, 'index'])->name('wallet.index');
+Route::get('/wallet/{wallet}', [WalletController::class, 'show'])->name('wallet.show');
+Route::get('/wallet/getByUser/{user_id}', [WalletController::class, 'getWalletByUser'])->name('wallet.get_by_user');
+Route::put('/wallet/{wallet}', [WalletController::class, 'update'])->name('wallet.update');
 
 Route::resource('/transaction', TransactionController::class);
 Route::put('/transaction/toconfirm/{transaction}', [TransactionController::class, 'toConfirmTransaction']);

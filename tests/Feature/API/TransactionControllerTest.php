@@ -67,7 +67,7 @@ class TransactionControllerTest extends TestCase
             'user_id' => $user_payer['data']['id'],
             'amount' => 52525
         ];
-        $this->json('PUT', 'api/wallet/' . $wallet['id'], $updatedWallet);
+        $this->json('PUT', 'api/wallet/' . $wallet['data']['id'], $updatedWallet);
 
         $user_payee = [
             'name' => fake()->name(),
@@ -83,7 +83,7 @@ class TransactionControllerTest extends TestCase
             'user_id' => $user_payee['data']['id'],
             'amount' => 12121
         ];
-        $this->json('PUT', 'api/wallet/' . $wallet['id'], $updatedWallet);
+        $this->json('PUT', 'api/wallet/' . $wallet['data']['id'], $updatedWallet);
 
         $transactionData = [
             'amount' => 10000,
@@ -148,7 +148,7 @@ class TransactionControllerTest extends TestCase
             'user_id' => $user_payer['data']['id'],
             'amount' => 52525
         ];
-        $this->json('PUT', 'api/wallet/' . $wallet['id'], $updatedWallet);
+        $this->json('PUT', 'api/wallet/' . $wallet['data']['id'], $updatedWallet);
 
         $user_payee = [
             'name' => fake()->name(),
@@ -164,7 +164,7 @@ class TransactionControllerTest extends TestCase
             'user_id' => $user_payee['data']['id'],
             'amount' => 12121
         ];
-        $this->json('PUT', 'api/wallet/' . $wallet['id'], $updatedWallet);
+        $this->json('PUT', 'api/wallet/' . $wallet['data']['id'], $updatedWallet);
         $transactionData = [
             'amount' => 10000,
             'payer_id' => $user_payer['data']['id'],

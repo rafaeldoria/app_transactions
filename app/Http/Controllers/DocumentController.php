@@ -22,7 +22,7 @@ class DocumentController extends Controller
         try {
             $documents = $this->document->all();
         } catch (\Throwable |\Exception $e) {
-            return ResponseService::exception('document.get', null, $e);
+            return ResponseService::exception('document.index', null, $e);
         }
         return new DocumentResourceCollection($documents);
     }
@@ -32,7 +32,7 @@ class DocumentController extends Controller
         try {
             
         } catch (\Throwable|\Exception $e) {
-            return ResponseService::exception('document.get', null, $e);
+            return ResponseService::exception('document.show', null, $e);
         }
         return new DocumentResource($document,[
             'type' => 'show',

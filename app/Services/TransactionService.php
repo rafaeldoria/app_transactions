@@ -4,19 +4,14 @@ namespace App\Services;
 
 use Exception;
 use App\Models\User;
-use App\Models\Wallet;
+use GuzzleHttp\Client;
 use App\Models\Transaction;
+use App\Jobs\TransactionJob;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response as HttpResponse;
 
 class TransactionService
 {
-    protected $transaction;
-
-    public function __construct(Transaction $transaction)
-    {
-        $this->transaction = $transaction;
-    }
-
     public function createTransaction(Request $request)
     {
         try {
@@ -29,7 +24,12 @@ class TransactionService
             if($payer->wallet->amount <= $request->amount){
                 throw new Exception('insufficient funds to payer.');
             }
-            return $this->transaction->create($request->all());
+            
+            $transaction = (new Transaction)->create($request->all());
+            TransactionJob::dispatch($transaction)
+                ->delay(now()->addSeconds(10))
+                ->onQueue('transactions');
+            return $transaction;
         } catch (Exception $e) {
             dd($e->getMessage());
         }
@@ -54,6 +54,22 @@ class TransactionService
         } catch (Exception $e) {
             dd($e->getMessage());
         }
+    }
+
+    public function toAuthorizeTransaction()
+    {
+        $authorize = false;
+        $client = new Client();
+        $authorize_ulr = env('AUTHORIZE_URL_MOCK');
+        $response = $client->getAsync($authorize_ulr)->wait();
+        $httpStatusCode = $response->getStatusCode();
+        $body = $response->getBody()->getContents();
+        $response = json_decode($body, true);
+
+        if($response['message'] == 'Autorizado' && $httpStatusCode == HttpResponse::HTTP_OK){
+            $authorize = true;
+        }
+        return $authorize;
     }
 
     

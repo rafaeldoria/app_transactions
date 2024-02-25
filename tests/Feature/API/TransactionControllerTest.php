@@ -97,7 +97,6 @@ class TransactionControllerTest extends TestCase
         $response->assertStatus(Response::HTTP_CREATED);
         $this->assertDatabaseHas('transactions', [
             'amount' => $transactionData['amount'],
-            'confirmed' => 0,
             'payer_id' => $user_payer['id'],
             'payee_id' => $user_payee['id']
         ]);

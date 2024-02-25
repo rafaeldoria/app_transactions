@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Resources\Document;
+namespace App\Resources\Wallet;
 
-use Illuminate\Http\Response;
 use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Http\Response;
 
-class DocumentResourceCollection extends ResourceCollection
+class WalletResourceCollection extends ResourceCollection
 {
     public function toArray($request) : array 
     {
@@ -16,8 +16,8 @@ class DocumentResourceCollection extends ResourceCollection
     {
         return [
             'status' => true,
-            'msg' => 'Listing documents',
-            'url' => route('document.index')
+            'msg' => 'Listing wallets',
+            'url' => route('wallet.index')
         ];
     }
 

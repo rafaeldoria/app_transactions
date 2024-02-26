@@ -7,20 +7,14 @@ use Illuminate\Http\Request;
 use App\Services\ResponseService;
 use App\Resources\Documents\DocumentResource;
 use App\Resources\Documents\DocumentResourceCollection;
+use App\Services\Documents\DocumentService;
 
 class DocumentController extends Controller
 {
-    protected $document;
-
-    public function __construct(Document $document)
-    {
-        $this->document = $document;
-    }
-
     public function index()
     {
         try {
-            $documents = $this->document->all();
+            $documents = (new DocumentService())->index();
         } catch (\Throwable |\Exception $e) {
             return ResponseService::exception('document.index', null, $e);
         }
@@ -30,7 +24,7 @@ class DocumentController extends Controller
     public function show(int $id)
     {   
         try {
-            $document = $this->document->find($id);
+            $document = (new DocumentService())->show($id);
             if (!$document) {
                 throw new \Exception('Not found', -404);
             }
@@ -46,7 +40,7 @@ class DocumentController extends Controller
     public function store(Request $request)
     {
         try {
-            $document = $this->document->create($request->all());
+            $document = (new DocumentService())->store($request->all());
         } catch (\Throwable|\Exception $e) {
             return ResponseService::exception('document.store',null,$e);
         }
@@ -59,11 +53,9 @@ class DocumentController extends Controller
     public function getDocumentByUser(Int $user_id)
     {
         try {
-            $document = $this->document->where('user_id', $user_id)
-                ->whereNull('deleted_at')
-                ->first();
+            $document = (new DocumentService())->getbyuser($user_id);
         } catch (\Throwable|\Exception $e) {
-            return ResponseService::exception('document.get_by_user',null,$e);
+            return ResponseService::exception('document.get_by_user',$user_id,$e);
         }
         return new DocumentResource($document,[
             'type' => 'show',
@@ -74,13 +66,13 @@ class DocumentController extends Controller
     public function update(Int $id, Request $request)
     {
         try {
-            $document = $this->document->find($id);
+            $document = (new DocumentService)->update($id, $request->all());
             if (!$document) {
                 throw new \Exception('Not found', -404);
             }
             $document->update($request->all());
         } catch (\Throwable|\Exception $e) {
-            return ResponseService::exception('document.update',null,$e);
+            return ResponseService::exception('document.update',$id,$e);
         }
         return new DocumentResource($document,[
             'type' => 'update',

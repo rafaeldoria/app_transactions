@@ -2,25 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Wallet;
 use Illuminate\Http\Request;
 use App\Services\ResponseService;
 use App\Resources\Wallets\WalletResourceCollection;
 use App\Resources\Wallets\WalletResource;
+use App\Services\Wallets\WalletService;
 
 class WalletController extends Controller
 {
-    protected $wallet;
-
-    public function __construct(Wallet $wallet)
-    {
-        $this->wallet = $wallet;
-    }
-
     public function index()
     {
         try {
-            $wallets = $this->wallet->all();
+            $wallets = (new WalletService)->index();
         } catch (\Throwable |\Exception $e) {
             return ResponseService::exception('wallet.index', null, $e);
         }
@@ -30,12 +23,12 @@ class WalletController extends Controller
     public function show(int $id) 
     {   
         try {
-            $wallet = $this->wallet->find($id);
+            $wallet = (new WalletService)->show($id);
             if (!$wallet) {
                 throw new \Exception('Not found', -404);
             }
         } catch (\Throwable|\Exception $e) {
-            return ResponseService::exception('wallet.show', null, $e);
+            return ResponseService::exception('wallet.show', $id, $e);
         }
         return new WalletResource($wallet,[
             'type' => 'show',
@@ -43,35 +36,29 @@ class WalletController extends Controller
         ]);
     }
 
-    public function getWalletByUser(Int $user_id)
-    {
-        try {
-            $wallet = $this->wallet->where('user_id', $user_id)
-                ->whereNull('deleted_at')
-                ->first();
-        } catch (\Throwable|\Exception $e) {
-            return ResponseService::exception('wallet.get_by_user',null,$e);
-        }
-        return new WalletResource($wallet,[
-            'type' => 'show',
-            'route' => 'wallet.get_by_user'
-        ]);
-    }
-
     public function update(Int $id, Request $request)
     {
         try {
-            $wallet = $this->wallet->find($id);
-            if (!$wallet) {
-                throw new \Exception('Not found', -404);
-            }
-            $wallet->update($request->all());
+            $wallet = (new WalletService)->update($id, $request->all());
         } catch (\Throwable|\Exception $e) {
-            return ResponseService::exception('wallet.update',null,$e);
+            return ResponseService::exception('wallet.update',$id,$e);
         }
         return new WalletResource($wallet,[
             'type' => 'update',
             'route' => 'wallet.update'
+        ]);
+    }
+
+    public function getWalletByUser(Int $user_id)
+    {
+        try {
+            $wallet = (new WalletService)->getWalletByUser($user_id);
+        } catch (\Throwable|\Exception $e) {
+            return ResponseService::exception('wallet.get_by_user',$user_id,$e);
+        }
+        return new WalletResource($wallet,[
+            'type' => 'show',
+            'route' => 'wallet.get_by_user'
         ]);
     }
 }

@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Transaction;
 use Illuminate\Http\Request;
 use App\Services\ResponseService;
-use App\Services\TransactionService;
+use App\Services\Transactions\TransactionService;
 use App\Services\Transactions\CreateTransactionService;
 use App\Services\Transactions\TransactionConfirmer;
 use App\Resources\Transactions\TransactionResource;
@@ -13,19 +12,10 @@ use App\Resources\Transactions\TransactionResourceCollection;
 
 class TransactionController extends Controller
 {
-    protected $transaction;
-    protected $transactionService;
-
-    public function __construct(Transaction $transaction,TransactionService $transactionService)
-    {
-        $this->transaction = $transaction;
-        $this->transactionService = $transactionService;
-    }
-
     public function index()
     {
         try {
-            $transactions = $this->transaction->all();
+            $transactions = (new TransactionService)->index();
         } catch (\Throwable |\Exception $e) {
             return ResponseService::exception('transaction.index', null, $e);
         }
@@ -35,12 +25,12 @@ class TransactionController extends Controller
     public function show(int $id) 
     {   
         try {
-            $transaction = $this->transaction->find($id);
+            $transaction = (new TransactionService)->show($id);
             if (!$transaction) {
                 throw new \Exception('Not found', -404);
             }
         } catch (\Throwable|\Exception $e) {
-            return ResponseService::exception('transaction.show', null, $e);
+            return ResponseService::exception('transaction.show', $id, $e);
         }
         return new TransactionResource($transaction,[
             'type' => 'show',
@@ -64,13 +54,13 @@ class TransactionController extends Controller
     public function update(Int $id, Request $request)
     {
         try {
-            $transaction = $this->transaction->find($id);
+            $transaction = (new TransactionService)->update($id, $request->all());
             if (!$transaction) {
                 throw new \Exception('Not found', -404);
             }
             $transaction->update($request->all());
         } catch (\Throwable|\Exception $e) {
-            return ResponseService::exception('transaction.update',$transaction->id,$e);
+            return ResponseService::exception('transaction.update',$id,$e);
         }
         return new TransactionResource($transaction,[
             'type' => 'update',
@@ -81,13 +71,13 @@ class TransactionController extends Controller
     public function transactionConfirmer(Int $id)
     {
         try {
-            $transaction = $this->transaction->find($id);
+            $transaction = (new TransactionService)->show($id);
             if (!$transaction) {
                 throw new \Exception('Not found', -404);
             }
             $transaction = (new TransactionConfirmer)->transactionConfirmer($transaction);
         } catch (\Throwable|\Exception $e) {
-            return ResponseService::exception('transaction.confirmer',$transaction->id,$e);
+            return ResponseService::exception('transaction.confirmer',$id,$e);
         }
         return new TransactionResource($transaction,[
             'type' => 'update',

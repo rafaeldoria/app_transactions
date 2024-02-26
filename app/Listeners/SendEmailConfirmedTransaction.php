@@ -3,7 +3,7 @@
 namespace App\Listeners;
 
 use App\Models\User;
-use App\Services\EmailService;
+use App\Services\Emails\EmailService;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Queue\InteractsWithQueue;
 use App\Events\ConfirmedTransactionEvent;

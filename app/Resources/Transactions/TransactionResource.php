@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Resources\Document;
+namespace App\Resources\Transactions;
 
-use App\Models\Document;
 use App\Services\ResponseService;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class DocumentResource extends JsonResource
+class TransactionResource extends JsonResource
 {
     private $config;
 
@@ -20,10 +19,10 @@ class DocumentResource extends JsonResource
     public function toArray($request) : array {
         return [
             'id' => $this->id,
-            'type' => $this->type,
-            'type_description' => Document::returnTypeDescriptionDocument($this->type),
-            'value' => $this->value,
-            'user_id' => $this->user_id
+            'payer_id' => $this->payer_id,
+            'payee_id' => $this->payee_id,
+            'amount' => $this->amount,
+            'confirmed' => $this->confirmed
         ];
     }
 

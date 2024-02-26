@@ -1,11 +1,11 @@
 <?php 
 
-namespace App\Services;
+namespace App\Services\Wallets;
 
 use App\Models\User;
 use App\Models\Wallet;
 
-class WalletService
+class CreateWalletService
 {
     public function createWallet(User $user)
     {

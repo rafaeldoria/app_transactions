@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Resources\Transaction;
+namespace App\Resources\Documents;
 
-use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Http\Response;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class TransactionResourceCollection extends ResourceCollection
+class DocumentResourceCollection extends ResourceCollection
 {
     public function toArray($request) : array 
     {
@@ -16,8 +16,8 @@ class TransactionResourceCollection extends ResourceCollection
     {
         return [
             'status' => true,
-            'msg' => 'Listing transactions',
-            'url' => route('transaction.index')
+            'msg' => 'Listing documents',
+            'url' => route('document.index')
         ];
     }
 

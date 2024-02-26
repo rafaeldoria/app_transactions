@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Mail\SendEmail;
 use App\Http\Controllers\Controller;
-use App\Services\EmailService;
+use App\Services\Emails\EmailService;
 use Illuminate\Support\Facades\Mail;
 
 class MailController extends Controller

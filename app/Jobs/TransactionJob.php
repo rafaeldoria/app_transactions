@@ -4,7 +4,8 @@ namespace App\Jobs;
 
 use App\Events\ConfirmedTransactionEvent;
 use App\Models\Transaction;
-use App\Services\TransactionService;
+use App\Services\Transactions\TransactionAuthorizer;
+use App\Services\Transactions\TransactionConfirmer;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -31,10 +32,9 @@ class TransactionJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $transactionService = new TransactionService();
-        if($transactionService->toAuthorizeTransaction()){
+        if((new TransactionAuthorizer)->transactionAuthorizer()){
             Log::info('Confirming transaction #' . $this->transaction->id);
-            $transactionService->toConfirmTransaction($this->transaction);
+            (new TransactionConfirmer)->transactionConfirmer($this->transaction);
             Log::info('Sending email to user - transaction #' . $this->transaction->id);
             ConfirmedTransactionEvent::dispatch($this->transaction);
         }else{

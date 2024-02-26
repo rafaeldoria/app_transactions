@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Wallet;
-use App\Resources\Wallet\WalletResource;
 use Illuminate\Http\Request;
 use App\Services\ResponseService;
-use App\Resources\Wallet\WalletResourceCollection;
+use App\Resources\Wallets\WalletResourceCollection;
+use App\Resources\Wallets\WalletResource;
 
 class WalletController extends Controller
 {

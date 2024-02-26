@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Resources\Document;
+namespace App\Resources\Users;
 
 use Illuminate\Http\Response;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class DocumentResourceCollection extends ResourceCollection
+class UserResourceCollection extends ResourceCollection
 {
     public function toArray($request) : array 
     {
@@ -16,8 +16,8 @@ class DocumentResourceCollection extends ResourceCollection
     {
         return [
             'status' => true,
-            'msg' => 'Listing documents',
-            'url' => route('document.index')
+            'msg' => 'Listing users',
+            'url' => route('user.index')
         ];
     }
 

@@ -6,8 +6,10 @@ use App\Models\Transaction;
 use Illuminate\Http\Request;
 use App\Services\ResponseService;
 use App\Services\TransactionService;
-use App\Resources\Transaction\TransactionResource;
-use App\Resources\Transaction\TransactionResourceCollection;
+use App\Services\Transactions\CreateTransactionService;
+use App\Services\Transactions\TransactionConfirmer;
+use App\Resources\Transactions\TransactionResource;
+use App\Resources\Transactions\TransactionResourceCollection;
 
 class TransactionController extends Controller
 {
@@ -46,7 +48,7 @@ class TransactionController extends Controller
     public function store(Request $request)
     {
         try {
-            $transaction = $this->transactionService->createTransaction($request);
+            $transaction = (new CreateTransactionService)->createTransaction($request);
         } catch (\Throwable|\Exception $e) {
             return ResponseService::exception('transaction.store',null,$e);
         }
@@ -69,16 +71,16 @@ class TransactionController extends Controller
         ]);
     }
 
-    public function toConfirmTransaction(Transaction $transaction)
+    public function transactionConfirmer(Transaction $transaction)
     {
         try {
-            $transaction = $this->transactionService->toConfirmTransaction($transaction);
+            $transaction = (new TransactionConfirmer)->transactionConfirmer($transaction);
         } catch (\Throwable|\Exception $e) {
-            return ResponseService::exception('transaction.to_confirm',$transaction->id,$e);
+            return ResponseService::exception('transaction.confirmer',$transaction->id,$e);
         }
         return new TransactionResource($transaction,[
             'type' => 'update',
-            'route' => 'transaction.to_confirm'
+            'route' => 'transaction.confirmer'
         ]);
     }
 }

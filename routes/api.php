@@ -33,6 +33,6 @@ Route::get('/wallet/getByUser/{user_id}', [WalletController::class, 'getWalletBy
 Route::put('/wallet/{wallet}', [WalletController::class, 'update'])->name('wallet.update');
 
 Route::resource('/transaction', TransactionController::class);
-Route::put('/transaction/toconfirm/{transaction}', [TransactionController::class, 'toConfirmTransaction']);
+Route::put('/transaction/confirmer/{transaction}', [TransactionController::class, 'transactionConfirmer'])->name('transaction.confirmer');
 
-Route::get('/mail/transaction/confirmed/{user}', [MailController::class, 'confirmedTransaction'])->name('transaction.to_confirm');
+Route::get('/mail/transaction/confirmed/{user}', [MailController::class, 'confirmedTransaction']);

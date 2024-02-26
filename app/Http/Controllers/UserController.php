@@ -4,12 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use App\Services\WalletService;
+use App\Services\Wallets\CreateWalletService;
 use App\Services\ResponseService;
-use Illuminate\Http\JsonResponse;
-use App\Resources\User\UserResource;
-use App\Resources\User\UserResourceCollection;
+use App\Resources\Users\UserResource;
+use App\Resources\Users\UserResourceCollection;
 
 class UserController extends Controller
 {
@@ -47,7 +45,7 @@ class UserController extends Controller
     {
         try {
             $user = $this->user->create($request->all());
-            (new WalletService)->createWallet($user);
+            (new CreateWalletService)->createWallet($user);
         } catch (\Throwable|\Exception $e) {
             return ResponseService::exception('user.store',null,$e);
         }

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Resources\User;
+namespace App\Resources\Transactions;
 
-use Illuminate\Http\Response;
 use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Http\Response;
 
-class UserResourceCollection extends ResourceCollection
+class TransactionResourceCollection extends ResourceCollection
 {
     public function toArray($request) : array 
     {
@@ -16,8 +16,8 @@ class UserResourceCollection extends ResourceCollection
     {
         return [
             'status' => true,
-            'msg' => 'Listing users',
-            'url' => route('user.index')
+            'msg' => 'Listing transactions',
+            'url' => route('transaction.index')
         ];
     }
 

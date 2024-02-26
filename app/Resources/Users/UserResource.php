@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Resources\Wallet;
+namespace App\Resources\Users;
 
+use App\Models\User;
 use App\Services\ResponseService;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class WalletResource extends JsonResource
+class UserResource extends JsonResource
 {
     private $config;
 
@@ -19,8 +20,10 @@ class WalletResource extends JsonResource
     public function toArray($request) : array {
         return [
             'id' => $this->id,
-            'user_id' => $this->user_id,
-            'amount' => $this->amount
+            'name' => $this->name,
+            'email' => $this->email,
+            'type' => $this->type,
+            'type_description' => User::returnTypeDescriptionUser($this->type)
         ];
     }
 

@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Document;
 use Illuminate\Http\Request;
 use App\Services\ResponseService;
-use App\Resources\Document\DocumentResource;
-use App\Resources\Document\DocumentResourceCollection;
+use App\Resources\Documents\DocumentResource;
+use App\Resources\Documents\DocumentResourceCollection;
 
 class DocumentController extends Controller
 {

@@ -173,7 +173,7 @@ class TransactionControllerTest extends TestCase
 
         $transaction = $this->postJson('api/transaction', $transactionData);
 
-        $response = $this->json('PUT', 'api/transaction/toconfirm/' . $transaction['data']['id']);
+        $response = $this->json('PUT', 'api/transaction/confirmer/' . $transaction['data']['id']);
 
         $response->assertStatus(Response::HTTP_OK); 
         $this->assertDatabaseHas('transactions', [

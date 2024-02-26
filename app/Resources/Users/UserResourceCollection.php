@@ -17,11 +17,12 @@ class UserResourceCollection extends ResourceCollection
         return [
             'status' => true,
             'msg' => 'Listing users',
-            'url' => route('user.index')
+            'url' => route('user.index'),
+            'method' => $request->method()
         ];
     }
 
-    public function withResponse($request, $response) : void
+    public function withResponse($response) : void
     {
         $response->setStatusCode(Response::HTTP_OK);
     }

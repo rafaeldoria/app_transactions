@@ -17,11 +17,12 @@ class TransactionResourceCollection extends ResourceCollection
         return [
             'status' => true,
             'msg' => 'Listing transactions',
-            'url' => route('transaction.index')
+            'url' => route('transaction.index'),
+            'method' => $request->method()
         ];
     }
 
-    public function withResponse($request, $response) : void
+    public function withResponse($response) : void
     {
         $response->setStatusCode(Response::HTTP_OK);
     }

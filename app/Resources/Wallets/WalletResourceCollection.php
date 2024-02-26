@@ -17,11 +17,12 @@ class WalletResourceCollection extends ResourceCollection
         return [
             'status' => true,
             'msg' => 'Listing wallets',
-            'url' => route('wallet.index')
+            'url' => route('wallet.index'),
+            'method' => $request->method()
         ];
     }
 
-    public function withResponse($request, $response) : void
+    public function withResponse($response) : void
     {
         $response->setStatusCode(Response::HTTP_OK);
     }

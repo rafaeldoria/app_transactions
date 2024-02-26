@@ -17,11 +17,12 @@ class DocumentResourceCollection extends ResourceCollection
         return [
             'status' => true,
             'msg' => 'Listing documents',
-            'url' => route('document.index')
+            'url' => route('document.index'),
+            'method' => $request->method()
         ];
     }
 
-    public function withResponse($request, $response) : void
+    public function withResponse($response) : void
     {
         $response->setStatusCode(Response::HTTP_OK);
     }

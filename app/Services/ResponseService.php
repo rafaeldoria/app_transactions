@@ -6,7 +6,7 @@ use Illuminate\Http\Response;
 
 class ResponseService
 {
-    public function default($config = [], $entityId = null) : array {
+    public function default($config = [], $entityId = null, $method = 'GET') : array {
         $route = $config['route'];
         $status = false;
         $msg = '';
@@ -42,7 +42,8 @@ class ResponseService
         return [
             'status' => $status,
             'msg' => $msg,
-            'url' => $url
+            'url' => $url,
+            'method' => $method
         ];
     }
 

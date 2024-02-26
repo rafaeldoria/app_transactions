@@ -30,10 +30,11 @@ class UserResource extends JsonResource
     }
 
     public function with($request) {
-        return $this->responseService->default($this->config, $this->id);
+        $method = $request->method();
+        return $this->responseService->default($this->config, $this->id, $method);
     }
 
-    public function withResponse($request, $response)
+    public function withResponse($response)
     {
         $response->setStatusCode($this->responseService->setStatudCode($this->config['type']));
     }

@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Document;
+use Exception;
+use Throwable;
 use Illuminate\Http\Request;
 use App\Services\ResponseService;
+use App\Services\Documents\DocumentService;
 use App\Resources\Documents\DocumentResource;
 use App\Resources\Documents\DocumentResourceCollection;
-use App\Services\Documents\DocumentService;
 
 class DocumentController extends Controller
 {
@@ -15,21 +16,21 @@ class DocumentController extends Controller
     {
         try {
             $documents = (new DocumentService())->index();
-        } catch (\Throwable |\Exception $e) {
-            return ResponseService::exception('document.index', null, $e);
+        } catch (Throwable |Exception $exception) {
+            return (new ResponseService)->exception('document.index', null, $exception);
         }
         return new DocumentResourceCollection($documents);
     }
 
-    public function show(int $id)
+    public function show(int $documentId)
     {   
         try {
-            $document = (new DocumentService())->show($id);
+            $document = (new DocumentService())->show($documentId);
             if (!$document) {
-                throw new \Exception('Not found', -404);
+                throw new Exception('Not found', -404);
             }
-        } catch (\Throwable|\Exception $e) {
-            return ResponseService::exception('document.show', $id, $e);
+        } catch (Throwable|Exception $exception) {
+            return (new ResponseService)->exception('document.show', $documentId, $exception);
         }
         return new DocumentResource($document,[
             'type' => 'show',
@@ -41,8 +42,8 @@ class DocumentController extends Controller
     {
         try {
             $document = (new DocumentService())->store($request->all());
-        } catch (\Throwable|\Exception $e) {
-            return ResponseService::exception('document.store',null,$e);
+        } catch (Throwable|Exception $exception) {
+            return (new ResponseService)->exception('document.store',null,$exception);
         }
         return new DocumentResource($document,[
             'type' => 'store',
@@ -50,12 +51,12 @@ class DocumentController extends Controller
         ]);
     }
 
-    public function getDocumentByUser(Int $user_id)
+    public function getDocumentByUser(Int $userId)
     {
         try {
-            $document = (new DocumentService())->getbyuser($user_id);
-        } catch (\Throwable|\Exception $e) {
-            return ResponseService::exception('document.get_by_user',$user_id,$e);
+            $document = (new DocumentService())->getbyuser($userId);
+        } catch (Throwable|Exception $exception) {
+            return (new ResponseService)->exception('document.get_by_user',$userId,$exception);
         }
         return new DocumentResource($document,[
             'type' => 'show',
@@ -63,16 +64,16 @@ class DocumentController extends Controller
         ]);
     }
 
-    public function update(Int $id, Request $request)
+    public function update(Int $documentId, Request $request)
     {
         try {
-            $document = (new DocumentService)->update($id, $request->all());
+            $document = (new DocumentService)->update($documentId, $request->all());
             if (!$document) {
-                throw new \Exception('Not found', -404);
+                throw new Exception('Not found', -404);
             }
             $document->update($request->all());
-        } catch (\Throwable|\Exception $e) {
-            return ResponseService::exception('document.update',$id,$e);
+        } catch (Throwable|Exception $exception) {
+            return (new ResponseService)->exception('document.update',$documentId,$exception);
         }
         return new DocumentResource($document,[
             'type' => 'update',

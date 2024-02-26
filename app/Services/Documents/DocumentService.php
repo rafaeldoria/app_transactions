@@ -13,9 +13,9 @@ class DocumentService
         return (new DocumentRepository)->index();
     }
 
-    public function show($id)
+    public function show($documentId)
     {
-        return (new DocumentRepository)->show($id);
+        return (new DocumentRepository)->show($documentId);
     }
 
     public function store(array $data)
@@ -24,15 +24,15 @@ class DocumentService
         return $document;
     }
 
-    public function update(int $id, $data)
+    public function update(int $documentId, $data)
     {
-        $document = $this->show($id);
+        $document = $this->show($documentId);
         (new DocumentRepository)->update($document, $data);
         return $document;
     }
 
-    public function getbyuser(int $user_id)
+    public function getbyuser(int $userId)
     {
-        return (new DocumentRepository)->getByUser($user_id);
+        return (new DocumentRepository)->getByUser($userId);
     }
 }

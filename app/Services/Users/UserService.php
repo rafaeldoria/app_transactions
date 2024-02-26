@@ -13,9 +13,9 @@ class UserService
         return (new UserRepository)->index();
     }
 
-    public function show($id)
+    public function show($userId)
     {
-        return (new UserRepository)->show($id);
+        return (new UserRepository)->show($userId);
     }
 
     public function store(array $data)
@@ -25,16 +25,16 @@ class UserService
         return $user;
     }
 
-    public function update(int $id, $data)
+    public function update(int $userId, $data)
     {
-        $user = $this->show($id);
+        $user = $this->show($userId);
         (new UserRepository)->update($user, $data);
         return $user;
     }
 
-    public function destroy(int $id)
+    public function destroy(int $userId)
     {
-        $user = $this->show($id);
+        $user = $this->show($userId);
         (new UserRepository)->destroy($user);
         return new User;
     }

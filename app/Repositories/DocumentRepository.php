@@ -10,21 +10,24 @@ class DocumentRepository extends BaseRepository implements IDocumentRepository
 {
     public function index()
     {
-        return Document::all();
+        $document = new Document();
+        return $document->all();
     }
 
-    public function show(Int $id)
+    public function show(Int $documentId)
     {
-        $document = Document::find($id);
+        $document = new Document();
+        $document = $document->find($documentId);
         if (!$document) {
-            throw new \Exception('Not found', -404);
+            throw new Exception('Not found', -404);
         }
         return $document;
     }
 
     public function store(array $data)
     {
-        return Document::create($data);
+        $document = new Document();
+        return $document->create($data);
     }
 
     public function update($document, array $data)
@@ -32,9 +35,10 @@ class DocumentRepository extends BaseRepository implements IDocumentRepository
         $document->update($data);
     }
 
-    public function getByUser(int $user_id)
+    public function getByUser(int $userId)
     {
-        return Document::where('user_id', $user_id)
+        $document = new Document();
+        return $document->where('user_id', $userId)
             ->whereNull('deleted_at')
             ->first();
     }

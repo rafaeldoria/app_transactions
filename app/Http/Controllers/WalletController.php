@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
+use Throwable;
 use Illuminate\Http\Request;
 use App\Services\ResponseService;
-use App\Resources\Wallets\WalletResourceCollection;
-use App\Resources\Wallets\WalletResource;
 use App\Services\Wallets\WalletService;
+use App\Resources\Wallets\WalletResource;
+use App\Resources\Wallets\WalletResourceCollection;
 
 class WalletController extends Controller
 {
@@ -14,21 +16,21 @@ class WalletController extends Controller
     {
         try {
             $wallets = (new WalletService)->index();
-        } catch (\Throwable |\Exception $e) {
-            return ResponseService::exception('wallet.index', null, $e);
+        } catch (Throwable |Exception $exception) {
+            return (new ResponseService)->exception('wallet.index', null, $exception);
         }
         return new WalletResourceCollection($wallets);
     }
 
-    public function show(int $id) 
+    public function show(int $walletId) 
     {   
         try {
-            $wallet = (new WalletService)->show($id);
+            $wallet = (new WalletService)->show($walletId);
             if (!$wallet) {
-                throw new \Exception('Not found', -404);
+                throw new Exception('Not found', -404);
             }
-        } catch (\Throwable|\Exception $e) {
-            return ResponseService::exception('wallet.show', $id, $e);
+        } catch (Throwable|Exception $exception) {
+            return (new ResponseService)->exception('wallet.show', $walletId, $exception);
         }
         return new WalletResource($wallet,[
             'type' => 'show',
@@ -36,12 +38,12 @@ class WalletController extends Controller
         ]);
     }
 
-    public function update(Int $id, Request $request)
+    public function update(Int $walletId, Request $request)
     {
         try {
-            $wallet = (new WalletService)->update($id, $request->all());
-        } catch (\Throwable|\Exception $e) {
-            return ResponseService::exception('wallet.update',$id,$e);
+            $wallet = (new WalletService)->update($walletId, $request->all());
+        } catch (Throwable|Exception $exception) {
+            return (new ResponseService)->exception('wallet.update',$walletId,$exception);
         }
         return new WalletResource($wallet,[
             'type' => 'update',
@@ -49,12 +51,12 @@ class WalletController extends Controller
         ]);
     }
 
-    public function getWalletByUser(Int $user_id)
+    public function getWalletByUser(Int $userId)
     {
         try {
-            $wallet = (new WalletService)->getWalletByUser($user_id);
-        } catch (\Throwable|\Exception $e) {
-            return ResponseService::exception('wallet.get_by_user',$user_id,$e);
+            $wallet = (new WalletService)->getWalletByUser($userId);
+        } catch (Throwable|Exception $exception) {
+            return (new ResponseService)->exception('wallet.get_by_user',$userId,$exception);
         }
         return new WalletResource($wallet,[
             'type' => 'show',

@@ -13,7 +13,8 @@ class CreateTransactionService
     public function createTransaction(Request $request)
     {
         try {
-            $payer = User::findOrFail($request->payer_id);
+            $user = new User();
+            $payer = $user->findOrFail($request->payer_id);
 
             if($payer->type == User::__SHOPMAN__){
                 throw new Exception('you dont have permission to effect this transaction.');

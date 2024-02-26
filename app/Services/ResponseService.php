@@ -6,7 +6,7 @@ use Illuminate\Http\Response;
 
 class ResponseService
 {
-    public static function default($config = [], $id = null) : array {
+    public function default($config = [], $entityId = null) : array {
         $route = $config['route'];
         $status = false;
         $msg = '';
@@ -20,22 +20,22 @@ class ResponseService
             
             case 'show':
                 $msg = 'Request made success!';
-                $url = self::getUrl($route, $id);
+                $url = self::getUrl($route, $entityId);
                 break;
             
             case 'destroy':
                 $msg = 'Data deleted success!';
-                $url = self::getUrl($route, $id);
+                $url = self::getUrl($route, $entityId);
                 break;
 
             case 'update':
                 $msg = 'Data updated success!';
-                $url = self::getUrl($route, $id);
+                $url = self::getUrl($route, $entityId);
                 break;
 
             default:
                 $msg = 'Success request!';
-                $url = self::getUrl($route, $id);
+                $url = self::getUrl($route, $entityId);
                 break;
         }
 
@@ -46,24 +46,24 @@ class ResponseService
         ];
     }
 
-    public static function getUrl($route, $id){
-        return $id != null ? route($route,$id) : route($route);
+    public static function getUrl($route, $entityId){
+        return $entityId != null ? route($route,$entityId) : route($route);
     }
 
-    public static function exception($route, $id, $e){
+    public function exception($route, $entityId, $exception){
         $status = false;
         $statusCode = 500;
         $error = '';
         $url = '';
 
-        switch ($e->getCode()) {
+        switch ($exception->getCode()) {
             case -401:
             case -403:
             case -404:
                 $status = false;
-                $statusCode = abs($e->getCode());
-                $error = $e->getMessage();
-                $url = self::getUrl($route, $id);
+                $statusCode = abs($exception->getCode());
+                $error = $exception->getMessage();
+                $url = self::getUrl($route, $entityId);
                 break;
 
             default:
@@ -73,12 +73,12 @@ class ResponseService
                     if($user){
                         $sentry->user_context(['id' => $user->id, 'name' => $user->name]);
                     }
-                    $sentry->captureException($e);
+                    $sentry->captureException($exception);
                 }
                 $status = false;
                 $statusCode = 500;
-                $error = $e->getMessage();
-                $url = self::getUrl($route, $id);
+                $error = $exception->getMessage();
+                $url = self::getUrl($route, $entityId);
                 break;
         }
 
@@ -90,7 +90,7 @@ class ResponseService
         ], $statusCode);
     }
 
-    public static function setStatudCode($config = []){
+    public function setStatudCode($config = []){
         return match($config) {
             'store' => Response::HTTP_CREATED,
             'destroy' => Response::HTTP_NO_CONTENT,

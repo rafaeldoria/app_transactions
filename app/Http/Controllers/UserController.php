@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
+use Throwable;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Services\ResponseService;
+use App\Services\Users\UserService;
 use App\Resources\Users\UserResource;
 use App\Resources\Users\UserResourceCollection;
-use App\Services\Users\UserService;
 
 class UserController extends Controller
 {
@@ -15,21 +17,21 @@ class UserController extends Controller
     {
         try {
             $users = (new UserService())->index();
-        } catch (\Throwable |\Exception $e) {
-            return ResponseService::exception('users.index', null, $e);
+        } catch (Throwable |Exception $exception) {
+            return (new ResponseService)->exception('users.index', null, $exception);
         }
         return new UserResourceCollection($users);
     }
 
-    public function show(Int $id)
+    public function show(Int $userId)
     {   
         try {
-            $user = (new UserService())->show($id);
+            $user = (new UserService())->show($userId);
             if (!$user) {
-                throw new \Exception('Not found', -404);
+                throw new Exception('Not found', -404);
             }
-        } catch (\Throwable|\Exception $e) {
-            return ResponseService::exception('users.show', $id, $e);
+        } catch (Throwable|Exception $exception) {
+            return (new ResponseService)->exception('users.show', $userId, $exception);
         }
         return new UserResource($user,[
             'type' => 'show',
@@ -41,8 +43,8 @@ class UserController extends Controller
     {
         try {
             $user = (new UserService())->store($request->all());
-        } catch (\Throwable|\Exception $e) {
-            return ResponseService::exception('user.store',null,$e);
+        } catch (Throwable|Exception $exception) {
+            return (new ResponseService)->exception('user.store',null,$exception);
         }
         return new UserResource($user,[
             'type' => 'store',
@@ -50,12 +52,12 @@ class UserController extends Controller
         ]);
     }
 
-    public function update(Int $id, Request $request)
+    public function update(Int $userId, Request $request)
     {
         try {
-            $user = (new UserService)->update($id, $request->all());
-        } catch (\Throwable|\Exception $e) {
-            return ResponseService::exception('user.update',$id,$e);
+            $user = (new UserService)->update($userId, $request->all());
+        } catch (Throwable|Exception $exception) {
+            return (new ResponseService)->exception('user.update',$userId,$exception);
         }
         return new UserResource($user,[
             'type' => 'update',
@@ -63,13 +65,13 @@ class UserController extends Controller
         ]);
     }
 
-    public function destroy(Int $id)
+    public function destroy(Int $userId)
     {
         try {
-            $user = (new UserService)->destroy($id);
-            $user->id = $id;
-        } catch (\Throwable|\Exception $e) {
-            return ResponseService::exception('user.destroy',$id,$e);
+            $user = (new UserService)->destroy($userId);
+            $user->id = $userId;
+        } catch (Throwable|Exception $exception) {
+            return (new ResponseService)->exception('user.destroy',$userId,$exception);
         }
         return new UserResource($user,[
             'type' => 'destroy',

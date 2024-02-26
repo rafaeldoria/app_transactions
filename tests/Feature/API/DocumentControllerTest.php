@@ -118,7 +118,7 @@ class DocumentControllerTest extends TestCase
     }
 
     /**
-     *  Test updating an API Wallet
+     *  Test updating an API Document
      */
     public function test_update_document_endpoint(): void
     {

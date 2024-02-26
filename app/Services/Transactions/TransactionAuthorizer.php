@@ -11,8 +11,8 @@ class TransactionAuthorizer
     {
         $authorize = false;
         $client = new Client();
-        $authorize_ulr = env('AUTHORIZE_URL_MOCK');
-        $response = $client->getAsync($authorize_ulr)->wait();
+        $authorizeUrl = env('AUTHORIZE_URL_MOCK');
+        $response = $client->getAsync($authorizeUrl)->wait();
         $httpStatusCode = $response->getStatusCode();
         $body = $response->getBody()->getContents();
         $response = json_decode($body, true);

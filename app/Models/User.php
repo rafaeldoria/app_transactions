@@ -37,6 +37,11 @@ class User extends Model
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function document(): HasMany
+    {
+        return $this->HasMany(Document::class);
+    }
     
     public function wallet(): HasOne
     {
@@ -53,7 +58,7 @@ class User extends Model
         return $this->hasMany(Transaction::class, 'payee_id');
     }
 
-    public static function returnTypeDescriptionUser(int $type): string
+    public function returnTypeDescriptionUser(int $type): string
     {
         return match($type) {
             self::__COMMOM__ => 'Commom',

@@ -2,27 +2,31 @@
 
 namespace App\Repositories;
 
+use Exception;
 use App\Models\User;
 
 class UserRepository extends BaseRepository
 {
     public function index()
     {
-        return User::all();
+        $user = new User();
+        return $user->all();
     }
 
-    public function show(Int $id)
+    public function show(Int $userId)
     {
-        $user = User::find($id);
+        $user = new User();
+        $user = $user->find($userId);
         if (!$user) {
-            throw new \Exception('Not found', -404);
+            throw new Exception('Not found', -404);
         }
         return $user;
     }
 
     public function store(array $data)
     {
-        return User::create($data);
+        $user = new User();
+        return $user->create($data);
     }
 
     public function update($user, array $data)

@@ -32,14 +32,12 @@ class TransactionJob implements ShouldQueue
      */
     public function handle(): void
     {
-        if((new TransactionAuthorizer)->transactionAuthorizer()){
-            Log::info('Confirming transaction #' . $this->transaction->id);
-            (new TransactionConfirmer)->transactionConfirmer($this->transaction);
-            Log::info('Sending email to user - transaction #' . $this->transaction->id);
-            ConfirmedTransactionEvent::dispatch($this->transaction);
-        }else{
+        if(!(new TransactionAuthorizer)->transactionAuthorizer()){
             $this->fail('Failed to confirm transaction : ' . $this->transaction->id);
         }
+        
+        (new TransactionConfirmer)->transactionConfirmer($this->transaction);
+        ConfirmedTransactionEvent::dispatch($this->transaction);
     }
 
     public function failed()

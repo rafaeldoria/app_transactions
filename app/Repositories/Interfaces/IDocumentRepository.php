@@ -4,5 +4,5 @@ namespace App\Repositories\Interfaces;
 
 interface IDocumentRepository
 {
-    public function getByUser(int $id);
+    public function getByUser(int $documentId);
 }

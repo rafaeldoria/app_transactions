@@ -13,11 +13,11 @@ class EmailService
         $this->content = $content;
     }
 
-    public function build(string $to)
+    public function build()
     {
         $client = new Client();
-        $url_send_email = env('MAIL_URL_MOCK');
-        $response = $client->getAsync($url_send_email)->wait();
+        $urlSendEmail = env('MAIL_URL_MOCK');
+        $response = $client->getAsync($urlSendEmail)->wait();
         $body = $response->getBody()->getContents();
 
         return json_decode($body, true);

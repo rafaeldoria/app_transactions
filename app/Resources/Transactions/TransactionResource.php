@@ -8,12 +8,14 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class TransactionResource extends JsonResource
 {
     private $config;
+    private $responseService;
 
     public function __construct($resource, $config = [])
     {
         parent::__construct($resource);
 
         $this->config = $config;
+        $this->responseService = new ResponseService;
     }
 
     public function toArray($request) : array {
@@ -27,11 +29,11 @@ class TransactionResource extends JsonResource
     }
 
     public function with($request) {
-        return ResponseService::default($this->config, $this->id);
+        return $this->responseService->default($this->config, $this->id);
     }
 
     public function withResponse($request, $response)
     {
-        $response->setStatusCode(ResponseService::setStatudCode($this->config['type']));
+        $response->setStatusCode($this->responseService->setStatudCode($this->config['type']));
     }
 }

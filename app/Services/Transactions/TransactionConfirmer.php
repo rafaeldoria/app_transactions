@@ -11,12 +11,13 @@ class TransactionConfirmer
     public function transactionConfirmer(Transaction $transaction)
     {
         try {
-            $payer = User::findOrFail($transaction->payer_id);
+            $user = new User();
+            $payer = $user->findOrFail($transaction->payer_id);
             $payer->wallet()->update([
                 'amount' => $payer->wallet->amount - $transaction->amount
             ]);
             
-            $payee = User::findOrFail($transaction->payee_id);
+            $payee = $user->findOrFail($transaction->payee_id);
             $payee->wallet()->update([
                 'amount' => $payee->wallet->amount + $transaction->amount
             ]);

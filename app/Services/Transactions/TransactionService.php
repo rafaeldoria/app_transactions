@@ -11,14 +11,14 @@ class TransactionService
         return (new TransactionRepository)->index();
     }
 
-    public function show($id)
+    public function show($transactionId)
     {
-        return (new TransactionRepository)->show($id);
+        return (new TransactionRepository)->show($transactionId);
     }
 
-    public function update(int $id, $data)
+    public function update(int $transactionId, $data)
     {
-        $transaction = $this->show($id);
+        $transaction = $this->show($transactionId);
         (new TransactionRepository)->update($transaction, $data);
         return $transaction;
     }

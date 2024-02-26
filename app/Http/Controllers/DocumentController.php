@@ -27,12 +27,15 @@ class DocumentController extends Controller
         return new DocumentResourceCollection($documents);
     }
 
-    public function show(Document $document)
+    public function show(int $id)
     {   
         try {
-            
+            $document = $this->document->find($id);
+            if (!$document) {
+                throw new \Exception('Not found', -404);
+            }
         } catch (\Throwable|\Exception $e) {
-            return ResponseService::exception('document.show', null, $e);
+            return ResponseService::exception('document.show', $id, $e);
         }
         return new DocumentResource($document,[
             'type' => 'show',
@@ -68,9 +71,13 @@ class DocumentController extends Controller
         ]);
     }
 
-    public function update(Document $document, Request $request)
+    public function update(Int $id, Request $request)
     {
         try {
+            $document = $this->document->find($id);
+            if (!$document) {
+                throw new \Exception('Not found', -404);
+            }
             $document->update($request->all());
         } catch (\Throwable|\Exception $e) {
             return ResponseService::exception('document.update',null,$e);

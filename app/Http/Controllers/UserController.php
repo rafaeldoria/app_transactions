@@ -28,10 +28,13 @@ class UserController extends Controller
         return new UserResourceCollection($users);
     }
 
-    public function show(User $user)
+    public function show(Int $id)
     {   
         try {
-            
+            $user = $this->user->find($id);
+            if (!$user) {
+                throw new \Exception('Not found', -404);
+            }
         } catch (\Throwable|\Exception $e) {
             return ResponseService::exception('users.show', null, $e);
         }
@@ -55,9 +58,13 @@ class UserController extends Controller
         ]);
     }
 
-    public function update(User $user, Request $request)
+    public function update(Int $id, Request $request)
     {
         try {
+            $user = $this->user->find($id);
+            if (!$user) {
+                throw new \Exception('Not found', -404);
+            }
             $user->update($request->all());
         } catch (\Throwable|\Exception $e) {
             return ResponseService::exception('user.update',$user->id,$e);
@@ -68,9 +75,13 @@ class UserController extends Controller
         ]);
     }
 
-    public function destroy(User $user)
+    public function destroy(Int $id)
     {
         try {
+            $user = $this->user->find($id);
+            if (!$user) {
+                throw new \Exception('Not found', -404);
+            }
             $user->delete();
         } catch (\Throwable|\Exception $e) {
             return ResponseService::exception('user.destroy',$user->id,$e);

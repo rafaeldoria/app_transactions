@@ -27,10 +27,13 @@ class WalletController extends Controller
         return new WalletResourceCollection($wallets);
     }
 
-    public function show(Wallet $wallet) 
+    public function show(int $id) 
     {   
         try {
-            
+            $wallet = $this->wallet->find($id);
+            if (!$wallet) {
+                throw new \Exception('Not found', -404);
+            }
         } catch (\Throwable|\Exception $e) {
             return ResponseService::exception('wallet.show', null, $e);
         }
@@ -55,9 +58,13 @@ class WalletController extends Controller
         ]);
     }
 
-    public function update(Wallet $wallet, Request $request)
+    public function update(Int $id, Request $request)
     {
         try {
+            $wallet = $this->wallet->find($id);
+            if (!$wallet) {
+                throw new \Exception('Not found', -404);
+            }
             $wallet->update($request->all());
         } catch (\Throwable|\Exception $e) {
             return ResponseService::exception('wallet.update',null,$e);

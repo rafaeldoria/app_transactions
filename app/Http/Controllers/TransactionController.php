@@ -32,10 +32,13 @@ class TransactionController extends Controller
         return new TransactionResourceCollection($transactions);
     }
 
-    public function show(Transaction $transaction) 
+    public function show(int $id) 
     {   
         try {
-            
+            $transaction = $this->transaction->find($id);
+            if (!$transaction) {
+                throw new \Exception('Not found', -404);
+            }
         } catch (\Throwable|\Exception $e) {
             return ResponseService::exception('transaction.show', null, $e);
         }
@@ -58,9 +61,13 @@ class TransactionController extends Controller
         ]);
     }
 
-    public function update(Transaction $transaction, Request $request)
+    public function update(Int $id, Request $request)
     {
         try {
+            $transaction = $this->transaction->find($id);
+            if (!$transaction) {
+                throw new \Exception('Not found', -404);
+            }
             $transaction->update($request->all());
         } catch (\Throwable|\Exception $e) {
             return ResponseService::exception('transaction.update',$transaction->id,$e);
@@ -71,9 +78,13 @@ class TransactionController extends Controller
         ]);
     }
 
-    public function transactionConfirmer(Transaction $transaction)
+    public function transactionConfirmer(Int $id)
     {
         try {
+            $transaction = $this->transaction->find($id);
+            if (!$transaction) {
+                throw new \Exception('Not found', -404);
+            }
             $transaction = (new TransactionConfirmer)->transactionConfirmer($transaction);
         } catch (\Throwable|\Exception $e) {
             return ResponseService::exception('transaction.confirmer',$transaction->id,$e);

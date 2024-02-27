@@ -33,9 +33,4 @@ class UserRepository extends BaseRepository
     {
         $user->update($data);
     }
-
-    public function destroy($user)
-    {
-        $user->delete();
-    }
 }

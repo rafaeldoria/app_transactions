@@ -1,5 +1,8 @@
 @apiulr = http://localhost:8180/api
 
+### GET /
+GET {{apiulr}}
+
 # =========================================
 # USERS
 
@@ -7,10 +10,7 @@
 GET {{apiulr}}/user
 
 ### GET USER BY ID
-GET {{apiulr}}/user/2
-
-### GET /
-GET {{apiulr}}
+GET {{apiulr}}/user/1
 
 ### POST /
 POST {{apiulr}}/user
@@ -69,10 +69,13 @@ Content-Type: application/json
 GET {{apiulr}}/wallet
 
 ### GET /
-GET {{apiulr}}/wallet/10
+GET {{apiulr}}/wallet/1
+
+### GET WALLET BY ID/
+GET {{apiulr}}/wallet/getByUser/1
 
 ### UPDATE /
-PUT {{apiulr}}/wallet/11
+PUT {{apiulr}}/wallet/1
 Content-Type: application/json
 
 {
@@ -87,3 +90,24 @@ GET {{apiulr}}/document
 
 ### GET DOCUMENT BY ID
 GET {{apiulr}}/document/1
+
+### GET WALLET BY ID/
+GET {{apiulr}}/document/getByUser/1
+
+### POST DOCUMENT /
+POST {{apiulr}}/document
+Content-Type: application/json
+
+{
+    "type":"2",
+    "value":"12345678913245",
+    "user_id":"2"
+}
+
+### UPDATE DOCUMENT /
+PUT {{apiulr}}/document/2
+Content-Type: application/json
+
+{
+    "value":"12345678913249",
+}

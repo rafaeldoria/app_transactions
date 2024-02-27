@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->unsignedTinyInteger('type')->default(1)->comment('1 => commom, 2 => shopman');
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->timestamps();
             $table->softDeletes();

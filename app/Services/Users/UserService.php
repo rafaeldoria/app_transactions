@@ -31,12 +31,4 @@ class UserService
         (new UserRepository)->update($user, $data);
         return $user;
     }
-
-    public function destroy(int $userId)
-    {
-        $user = $this->show($userId);
-        (new UserRepository)->destroy($user);
-        return new User;
-    }
-    
 }

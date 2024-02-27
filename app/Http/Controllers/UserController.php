@@ -64,18 +64,4 @@ class UserController extends Controller
             'route' => 'user.update'
         ]);
     }
-
-    public function destroy(Int $userId)
-    {
-        try {
-            $user = (new UserService)->destroy($userId);
-            $user->id = $userId;
-        } catch (Throwable|Exception $exception) {
-            return (new ResponseService)->exception('user.destroy',$userId,$exception);
-        }
-        return new UserResource($user,[
-            'type' => 'destroy',
-            'route' => 'user.destroy'
-        ]); 
-    }
 }

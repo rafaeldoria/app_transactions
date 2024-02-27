@@ -6,6 +6,7 @@ use Exception;
 use App\Models\User;
 use App\Models\Transaction;
 use App\Jobs\TransactionJob;
+use App\Models\Document;
 use Illuminate\Http\Request;
 
 class CreateTransactionService
@@ -15,6 +16,14 @@ class CreateTransactionService
         try {
             $user = new User();
             $payer = $user->findOrFail($request->payer_id);
+            $payee = $user->findOrFail($request->payee_id);
+
+            $document = new Document();
+            $document_payer = $document->find($payer->id);
+            $document_payee = $document->find($payee->id);
+            if(empty($document_payer) || empty($document_payee)){
+                throw new Exception('necessary that the two user have a document.');
+            }
 
             if($payer->type == User::__SHOPMAN__){
                 throw new Exception('you dont have permission to effect this transaction.');

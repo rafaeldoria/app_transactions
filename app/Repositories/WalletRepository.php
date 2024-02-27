@@ -32,8 +32,12 @@ class WalletRepository extends BaseRepository implements IWalletRepository
     public function getWalletByUser(int $userId)
     {
         $wallet = new Wallet();
-        return $wallet->where('user_id', $userId)
+        $wallet = $wallet->where('user_id', $userId)
             ->whereNull('deleted_at')
             ->first();
+        if(!$wallet){
+            throw new Exception('Not found', -404);
+        }
+        return $wallet;
     }
 }

@@ -24,8 +24,9 @@ class WalletResource extends JsonResource
         }
         return [
             'id' => $this->id,
+            'amount' => $this->amount,
             'user_id' => $this->user_id,
-            'amount' => $this->amount
+            'user' => $this->responseService->getUrl('user.show', $this->id)
         ];
     }
 

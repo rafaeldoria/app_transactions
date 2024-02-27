@@ -28,7 +28,9 @@ class UserResource extends JsonResource
             'name' => $this->name,
             'email' => $this->email,
             'type' => $this->type,
-            'type_description' => (new User)->returnTypeDescriptionUser($this->type)
+            'type_description' => (new User)->returnTypeDescriptionUser($this->type),
+            'wallet' => $this->responseService->getUrl('wallet.get_by_user', $this->id),
+            'document' => $this->responseService->getUrl('document.get_by_user', $this->id)
         ];
     }
 

@@ -38,8 +38,13 @@ class DocumentRepository extends BaseRepository implements IDocumentRepository
     public function getByUser(int $userId)
     {
         $document = new Document();
-        return $document->where('user_id', $userId)
+        $document = $document->where('user_id', $userId)
             ->whereNull('deleted_at')
             ->first();
+            
+        if (!$document) {
+            throw new Exception('Not found', -404);
+        }
+        return $document;
     }
 }

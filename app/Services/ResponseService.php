@@ -20,22 +20,22 @@ class ResponseService
             
             case 'show':
                 $msg = 'Request made success!';
-                $url = self::getUrl($route, $entityId);
+                $url = $this->getUrl($route, $entityId);
                 break;
             
             case 'destroy':
                 $msg = 'Data deleted success!';
-                $url = self::getUrl($route, $entityId);
+                $url = $this->getUrl($route, $entityId);
                 break;
 
             case 'update':
                 $msg = 'Data updated success!';
-                $url = self::getUrl($route, $entityId);
+                $url = $this->getUrl($route, $entityId);
                 break;
 
             default:
                 $msg = 'Success request!';
-                $url = self::getUrl($route, $entityId);
+                $url = $this->getUrl($route, $entityId);
                 break;
         }
 
@@ -49,7 +49,7 @@ class ResponseService
         ];
     }
 
-    public static function getUrl($route, $entityId){
+    public function getUrl($route, $entityId){
         return $entityId != null ? route($route,$entityId) : route($route);
     }
 
@@ -66,14 +66,14 @@ class ResponseService
                 $status = false;
                 $statusCode = abs($exception->getCode());
                 $error = $exception->getMessage();
-                $url = self::getUrl($route, $entityId);
+                $url = $this->getUrl($route, $entityId);
                 break;
 
             default:
                 $status = false;
                 $statusCode = 500;
                 $error = $exception->getMessage();
-                $url = self::getUrl($route, $entityId);
+                $url = $this->getUrl($route, $entityId);
                 break;
         }
 

@@ -22,6 +22,10 @@ Route::get('/', function (){
     return '-- APP TRANSACTIONS --';
 });
 
+Route::get('/flow', function (){
+    return 'https://miro.com/app/board/uXjVNn0S_Eg=/?share_link_id=615403998221';
+});
+
 Route::resource('/user', UserController::class);
 
 Route::resource('/document', DocumentController::class);

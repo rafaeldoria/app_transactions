@@ -27,7 +27,9 @@ class TransactionResource extends JsonResource
             'payer_id' => $this->payer_id,
             'payee_id' => $this->payee_id,
             'amount' => $this->amount,
-            'confirmed' => $this->confirmed
+            'confirmed' => $this->confirmed,
+            'payer' => $this->responseService->getUrl('user.show', $this->payer_id),
+            'payee' => $this->responseService->getUrl('user.show', $this->payee_id),
         ];
     }
 

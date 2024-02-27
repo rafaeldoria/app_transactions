@@ -19,9 +19,9 @@ class CreateTransactionService
             $payee = $user->findOrFail($request->payee_id);
 
             $document = new Document();
-            $document_payer = $document->find($payer->id);
-            $document_payee = $document->find($payee->id);
-            if(empty($document_payer) || empty($document_payee)){
+            $documentPayer = $document->find($payer->id);
+            $documentPayee = $document->find($payee->id);
+            if(empty($documentPayer) || empty($documentPayee)){
                 throw new Exception('necessary that the two user have a document.');
             }
 

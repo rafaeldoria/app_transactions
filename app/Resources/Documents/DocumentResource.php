@@ -20,6 +20,9 @@ class DocumentResource extends JsonResource
     }
 
     public function toArray($request) : array {
+        if(empty($request)){
+            return [];
+        }
         return [
             'id' => $this->id,
             'type' => $this->type,

@@ -39,6 +39,8 @@ class ResponseService
                 break;
         }
 
+        if($msg!==''){$status = true;}
+
         return [
             'status' => $status,
             'msg' => $msg,
@@ -68,14 +70,6 @@ class ResponseService
                 break;
 
             default:
-                if(app()->bound('sentry')){
-                    $sentry = app('sentry');
-                    $user = auth()->user();
-                    if($user){
-                        $sentry->user_context(['id' => $user->id, 'name' => $user->name]);
-                    }
-                    $sentry->captureException($exception);
-                }
                 $status = false;
                 $statusCode = 500;
                 $error = $exception->getMessage();

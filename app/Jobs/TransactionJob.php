@@ -42,6 +42,6 @@ class TransactionJob implements ShouldQueue
 
     public function failed()
     {
-        echo 'failed';
+        
     }
 }

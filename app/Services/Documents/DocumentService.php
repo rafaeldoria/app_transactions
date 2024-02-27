@@ -2,9 +2,7 @@
 
 namespace App\Services\Documents;
 
-use App\Models\Document;
 use App\Repositories\DocumentRepository;
-use Exception;
 
 class DocumentService
 {

@@ -19,6 +19,9 @@ class WalletResource extends JsonResource
     }
 
     public function toArray($request) : array {
+        if(empty($request)){
+            return [];
+        }
         return [
             'id' => $this->id,
             'user_id' => $this->user_id,

@@ -19,6 +19,9 @@ class TransactionResource extends JsonResource
     }
 
     public function toArray($request) : array {
+        if(empty($request)){
+            return [];
+        }
         return [
             'id' => $this->id,
             'payer_id' => $this->payer_id,

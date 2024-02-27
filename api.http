@@ -45,8 +45,8 @@ POST {{apiulr}}/transaction
 Content-Type: application/json
 
 {
-    "payer_id":"10",
-    "payee_id":"11",
+    "payer_id":"16",
+    "payee_id":"18",
     "amount":5000
 }
 
@@ -59,7 +59,7 @@ Content-Type: application/json
 }
 
 ### TO CONFIRM /
-PUT {{apiulr}}/transaction/toconfirm/4
+PUT {{apiulr}}/transaction/confirmer/4
 Content-Type: application/json
 
 # =========================================
@@ -78,3 +78,12 @@ Content-Type: application/json
 {
     "amount":10000
 }
+
+# =========================================
+# DOCUMENTS
+
+### GET ALL DOCUMENTS
+GET {{apiulr}}/document
+
+### GET DOCUMENT BY ID
+GET {{apiulr}}/document/1

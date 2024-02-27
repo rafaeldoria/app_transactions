@@ -9,6 +9,9 @@ class DocumentResourceCollection extends ResourceCollection
 {
     public function toArray($request) : array 
     {
+        if(empty($request)){
+            return [];
+        }
         return ['data' => $this->collection];
     }
 

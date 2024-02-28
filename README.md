@@ -8,9 +8,9 @@ Bem-vindo ao App-Transaction! Este é um sistema desenvolvido em Laravel que per
    
 - **Controle de Saldo:** Os usuários podem acompanhar seus saldos e visualizar suas transações de forma clara e organizada.
 
-- **Controle de Saldo:** Processo em background e desacoplado para confirmação de uma transação e envio da confirmação para usuários.
+- **Confirmação de Transações:** Processo em background e desacoplado para confirmação de uma transação e envio da confirmação para usuários.
 
-- **Controle de Saldo:** Todo o processo de usuario, carteira e documentação.
+- **Gestão de Usuários:** Todo o processo de usuario, carteira e documentação.
 
 ## Requisitos
 
@@ -40,4 +40,7 @@ docker exec app-php php artisan test --colors=always
 
 ## Documentação
 
-Acesse:(`http://localhost:8180/api`).
+Acesse:(`http://localhost:8180/api/documentation`).
+
+## Fluxo Transação
+![alt text](image-1.png)

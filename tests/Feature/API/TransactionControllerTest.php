@@ -4,6 +4,7 @@ namespace Tests\Feature\API;
 
 use Tests\TestCase;
 use App\Models\User;
+use App\Models\Document;
 use App\Models\Transaction;
 use Illuminate\Support\Str;
 use Illuminate\Http\Response;
@@ -57,7 +58,6 @@ class TransactionControllerTest extends TestCase
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'type' => User::__COMMOM__,
-            'email_verified_at' => now(),
             'password' => Hash::make('11223344'),
             'remember_token' => Str::random(10),
         ];
@@ -73,7 +73,6 @@ class TransactionControllerTest extends TestCase
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'type' => User::__COMMOM__,
-            'email_verified_at' => now(),
             'password' => Hash::make('11223344'),
             'remember_token' => Str::random(10),
         ];
@@ -84,6 +83,20 @@ class TransactionControllerTest extends TestCase
             'amount' => 12121
         ];
         $this->json('PUT', 'api/wallet/' . $wallet['data']['id'], $updatedWallet);
+
+        $documentPayer = [
+            'type' => Document::__TYPE_CPF__,
+            'value' => rand(00000000001,99999999999),
+            'user_id' => $user_payer['data']['id']
+        ];
+        $this->postJson('api/document', $documentPayer);
+        
+        $documentPayee = [
+            'type' => Document::__TYPE_CPF__,
+            'value' => rand(00000000001,99999999999),
+            'user_id' => $user_payee['data']['id']
+        ];
+        $this->postJson('api/document', $documentPayee);
 
         $transactionData = [
             'amount' => 10000,
@@ -138,7 +151,6 @@ class TransactionControllerTest extends TestCase
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'type' => User::__COMMOM__,
-            'email_verified_at' => now(),
             'password' => Hash::make('11223344'),
             'remember_token' => Str::random(10),
         ];
@@ -154,7 +166,6 @@ class TransactionControllerTest extends TestCase
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'type' => User::__COMMOM__,
-            'email_verified_at' => now(),
             'password' => Hash::make('11223344'),
             'remember_token' => Str::random(10),
         ];
@@ -165,6 +176,21 @@ class TransactionControllerTest extends TestCase
             'amount' => 12121
         ];
         $this->json('PUT', 'api/wallet/' . $wallet['data']['id'], $updatedWallet);
+
+        $documentPayer = [
+            'type' => Document::__TYPE_CPF__,
+            'value' => rand(00000000001,99999999999),
+            'user_id' => $user_payer['data']['id']
+        ];
+        $this->postJson('api/document', $documentPayer);
+        
+        $documentPayee = [
+            'type' => Document::__TYPE_CPF__,
+            'value' => rand(00000000001,99999999999),
+            'user_id' => $user_payee['data']['id']
+        ];
+        $this->postJson('api/document', $documentPayee);
+        
         $transactionData = [
             'amount' => 10000,
             'payer_id' => $user_payer['data']['id'],

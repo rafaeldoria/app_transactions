@@ -43,4 +43,4 @@ docker exec app-php php artisan test --colors=always
 Acesse:(`http://localhost:8180/api/documentation`).
 
 ## Fluxo Transação
-![alt text](image-1.png)
+![alt text](image-2.png)

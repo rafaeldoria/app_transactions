@@ -19,7 +19,7 @@ use App\Http\Controllers\TransactionController;
 */
 
 Route::get('/', function (){
-    return '-- APP TRANSACTIONS --';
+    return ['-- APP TRANSACTIONS --'];
 });
 
 Route::get('/documentation', function (){

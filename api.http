@@ -40,6 +40,9 @@ GET {{apiulr}}/transaction
 ### GET /
 GET {{apiulr}}/transaction/4
 
+### GET BY USER/
+GET {{apiulr}}/transaction/getByUser/4
+
 ### POST /
 POST {{apiulr}}/transaction
 Content-Type: application/json

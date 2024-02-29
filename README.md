@@ -25,7 +25,7 @@ Bem-vindo ao App-Transaction! Este é um sistema desenvolvido em Laravel que per
 3. Copie o arquivo `.env.example` para `.env`: `cp .env.example .env`
 4. Configure as variáveis de ambiente no arquivo `.env`, especialmente a conexão com o banco de dados. 
 5. Acesse o diretório do docker: `cd app-transactions`
-6. Clone o código fonto do projeto de transações: `git clone https://github.com/rafaeldoria/app_transaction.git .`
+6. Clone o código fonto do projeto de transações: ` git clone https://github.com/rafaeldoria/app_transactions.git . `
 7. Suba os containers: `docker-compose up -d` 
 8. Instale as dependências do Composer: `docker exec app-php composer install`
 9. Copie o arquivo `.env.example` para `.env`: `docker exec app-php cp .env.example .env`

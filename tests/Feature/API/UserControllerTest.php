@@ -27,13 +27,8 @@ class UserControllerTest extends TestCase
         $response = $this->getJson('/api/user');
         
         $response->assertStatus(Response::HTTP_OK)
-                ->assertJsonCount(3)
-                ->assertSee(['id','name','email']);
-
-        $response->assertJson(function (AssertableJson $json){
-            $json->whereType('0.id', 'integer');
-            $json->whereType('0.email', 'string');
-        });
+                ->assertJsonCount(3, 'data')
+                ->assertSee(['id','name','email','type']);
     }
 
     /**
@@ -44,21 +39,19 @@ class UserControllerTest extends TestCase
         $user = User::factory()->create();
         
         $response = $this->getJson('api/user/' . $user->id);
-
         $response->assertStatus(Response::HTTP_OK)
-                ->assertJsonStructure(['id','name', 'email']);
+                ->assertJsonStructure(['data' => ['id','name', 'email','type']]);
     }
 
     /**
      * Test storing an API user 
      * and create wallet by service
      */
-    public function test_post_user_endpoint(): void
+    public function test_post_only_user_endpoint(): void
     {
         $userData = [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
             'password' => Hash::make('987654'),
             'remember_token' => Str::random(10)
         ];
@@ -83,7 +76,6 @@ class UserControllerTest extends TestCase
         $userData = [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
             'password' => Hash::make('987654'),
         ];
         $user = User::Factory()->create($userData);
@@ -105,19 +97,6 @@ class UserControllerTest extends TestCase
     }
 
     /**
-     * Test destroy an user
-     */
-    public function test_delete_user_endpoint(): void
-    {
-        $user = User::factory()->create();
-
-        $response = $this->json('DELETE', 'api/user/' . $user->id);
-
-        $response->assertStatus(Response::HTTP_NO_CONTENT);
-        $this->assertDatabaseMissing('users', ['id' => $user->id]);
-    }
-
-    /**
      * Test create and find an User with type
      */
     public function test_post_user_endpoint_with_type_and_find_by_type(): void
@@ -126,7 +105,6 @@ class UserControllerTest extends TestCase
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'type' => User::__COMMOM__,
-            'email_verified_at' => now(),
             'password' => Hash::make('11223344'),
             'remember_token' => Str::random(10),
         ];

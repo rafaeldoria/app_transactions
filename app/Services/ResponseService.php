@@ -56,26 +56,23 @@ class ResponseService
     public function exception($route, $entityId, $exception){
         $status = false;
         $statusCode = 500;
-        $error = '';
-        $url = '';
+        $error = $exception->getMessage();
+        $url = $this->getUrl($route, $entityId);
 
-        switch ($exception->getCode()) {
-            case -401:
-            case -403:
-            case -404:
-                $status = false;
-                $statusCode = abs($exception->getCode());
-                $error = $exception->getMessage();
-                $url = $this->getUrl($route, $entityId);
-                break;
+        $statusCode = match ($exception->getCode()) {
+            -401, -403, -404 => abs($exception->getCode()),
+            default => 500,
+        };
 
-            default:
-                $status = false;
-                $statusCode = 500;
-                $error = $exception->getMessage();
-                $url = $this->getUrl($route, $entityId);
-                break;
+
+        if(isset($exception->errorInfo[1])){
+            $error = match ($exception->errorInfo[1]) {
+                1062 => 'Duplicate value',
+                1054 => 'Column not found',
+                default => $exception->getMessage(),
+            };
         }
+        
 
         return response()->json([
             'status' => $status,

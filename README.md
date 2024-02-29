@@ -20,19 +20,18 @@ Bem-vindo ao App-Transaction! Este é um sistema desenvolvido em Laravel que per
 
 ## Instalação
 
-1. Clone este repositório: `git clone https://github.com/rafaeldoria/docker-laravel`
-2. Acesse o diretório do docker: `cd app-transaction docker-laravel`
-3. Clone o código fonto do projeto de transações: `https://github.com/rafaeldoria/app_transaction`
-4. Acesse o diretório do projeto: `cd app-transaction`
-5. Copie o arquivo `.env.example` para `.env`: `cp .env.example .env`
-6. Configure as variáveis de ambiente no arquivo `.env`, especialmente a conexão com o banco de dados. 
-7. Suba os containers: `docker-compose up -d` 
-8. Instale as dependências do Composer: `docker exec app-php composer install`
-9. Copie o arquivo `.env.example` para `.env`: `docker exec app-php cp .env.example .env`
-10. Configure as variáveis de ambiente no arquivo `.env`, especialmente a conexão com o banco de dados (as mesmas do env do passo 6).
-11. Gere a chave de aplicativo: `docker exec app-php php artisan key:generate`
-12. Execute as migrações do banco de dados: `docker exec app-php php artisan migrate`
-13. Acesse: `http://localhost:8180/api`
+1. Clone este repositório: `git clone https://github.com/rafaeldoria/docker-laravel.git`
+2. Acesse o diretório do docker: `cd docker-laravel`
+3. Clone o código fonto do projeto de transações: `git clone https://github.com/rafaeldoria/app_transaction.git`
+4. Copie o arquivo `.env.example` para `.env`: `cp .env.example .env`
+5. Configure as variáveis de ambiente no arquivo `.env`, especialmente a conexão com o banco de dados. 
+6. Suba os containers: `docker-compose up -d` 
+7. Instale as dependências do Composer: `docker exec app-php composer install`
+8. Copie o arquivo `.env.example` para `.env`: `docker exec app-php cp .env.example .env`
+9. Configure as variáveis de ambiente no arquivo `.env`, especialmente a conexão com o banco de dados (as mesmas do env do passo 6).
+10. Gere a chave de aplicativo: `docker exec app-php php artisan key:generate`
+11. Execute as migrações do banco de dados: `docker exec app-php php artisan migrate`
+12. Acesse: `http://localhost:8180/api`
 
 ## Testes
 

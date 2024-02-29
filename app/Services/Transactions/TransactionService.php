@@ -22,4 +22,9 @@ class TransactionService
         (new TransactionRepository)->update($transaction, $data);
         return $transaction;
     }
+
+    public function getTransacationByUser(int $userId)
+    {
+        return (new TransactionRepository)->getTransacationByUser($userId);
+    }
 }

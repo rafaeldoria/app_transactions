@@ -17,10 +17,21 @@ class TransactionResourceCollection extends ResourceCollection
 
     public function with($request) : array 
     {
+        $uri = explode("/", $request->getRequestUri());
+
+        $url = '';
+        if(isset($uri[3])){
+            $url = match ($uri[3]) {
+                'getByUser' => route('transaction.get_by_user',$uri[4])
+            };
+        }else{
+            $url = route('transaction.index');
+        }
+        
         return [
             'status' => true,
             'msg' => 'Listing transactions',
-            'url' => route('transaction.index'),
+            'url' => $url,
             'method' => $request->method()
         ];
     }

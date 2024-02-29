@@ -26,7 +26,7 @@ class TransactionConfirmer
             $transaction->update($transaction->toArray());
             return $transaction;
         } catch (Exception $e) {
-            dd($e->getMessage());
+            throw new Exception($e->getMessage());
         }
     }
 }

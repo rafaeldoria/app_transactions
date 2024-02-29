@@ -27,4 +27,18 @@ class TransactionRepository extends BaseRepository
     {
         $transaction->update($data);
     }
+
+    public function getTransacationByUser(int $userId)
+    {
+        $transactions = new Transaction();
+        $transactions = $transactions->where('payer_id', $userId)
+            ->orWhere('payee_id', $userId)
+            ->whereNull('deleted_at')
+            ->get();
+            
+        if (!$transactions) {
+            throw new Exception('Not found', -404);
+        }
+        return $transactions;
+    }
 }

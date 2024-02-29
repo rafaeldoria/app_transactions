@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Transaction;
 use Exception;
 use Throwable;
 use Illuminate\Http\Request;
@@ -85,5 +86,15 @@ class TransactionController extends Controller
             'type' => 'update',
             'route' => 'transaction.confirmer'
         ]);
+    }
+
+    public function getTransactionByUser(Int $userId)
+    {
+        try {
+            $transactions = (new TransactionService)->getTransacationByUser($userId);
+        } catch (Throwable|Exception $exception) {
+            return (new ResponseService)->exception('transaction.get_by_user',$userId,$exception);
+        }
+        return new TransactionResourceCollection($transactions);
     }
 }

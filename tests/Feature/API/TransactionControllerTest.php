@@ -209,4 +209,16 @@ class TransactionControllerTest extends TestCase
         $transaction = $this->getJson('api/transaction/' . $transaction['data']['id']);
         $this->assertTrue(($transaction['data']['confirmed']) == 1);
     }
+
+    /**
+     * Test obtaining a transaction by User via the API.
+     */
+    public function test_get_transaction_bt_user_endpoint(): void
+    {
+        $transaction = Transaction::factory()->create();
+        $response = $this->getJson('api/transaction/getByUser/' . $transaction->payer_id);
+        $response->assertStatus(Response::HTTP_OK)
+            ->assertJsonCount(1, 'data')
+            ->assertSee('id','payee','payer','amount','confirmed');
+    }
 }

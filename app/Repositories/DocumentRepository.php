@@ -2,9 +2,10 @@
 
 namespace App\Repositories;
 
-use App\Models\Document;
-use App\Repositories\Interfaces\IDocumentRepository;
 use Exception;
+use App\Models\Document;
+use Illuminate\Database\QueryException;
+use App\Repositories\Interfaces\IDocumentRepository;
 
 class DocumentRepository extends BaseRepository implements IDocumentRepository
 {

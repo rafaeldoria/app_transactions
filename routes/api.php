@@ -25,7 +25,7 @@ Route::get('/', function (){
 Route::get('/documentation', function (){
     return [
         'transaction_app_flow' => 'https://miro.com/app/board/uXjVNn0S_Eg=/?share_link_id=615403998221',
-        'postman_api' => 'https://api.postman.com/collections/2773038-aaa970db-ea9d-496a-aff3-6e5f2456dcc0?access_key=PMAT-01HQPEAR0M0SEXZ042X7FPAE1X'
+        'postman_api' => 'https://api.postman.com/collections/2773038-aaa970db-ea9d-496a-aff3-6e5f2456dcc0?access_key=APP_POSTMAN_KEY'
     ];
 });
 
@@ -41,5 +41,6 @@ Route::put('/wallet/{id}', [WalletController::class, 'update'])->name('wallet.up
 
 Route::resource('/transaction', TransactionController::class);
 Route::put('/transaction/confirmer/{id}', [TransactionController::class, 'transactionConfirmer'])->name('transaction.confirmer');
+Route::get('/transaction/getByUser/{user_id}', [TransactionController::class, 'getTransactionByUser'])->name('transaction.get_by_user');
 
 Route::get('/mail/transaction/confirmed/{user}', [MailController::class, 'confirmedTransaction']);

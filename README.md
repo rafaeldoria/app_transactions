@@ -31,7 +31,7 @@ Bem-vindo ao App-Transaction! Este é um sistema desenvolvido em Laravel que per
 9. Copie o arquivo `.env.example` para `.env`: `docker exec app-php cp .env.example .env`
 10. Configure as variáveis de ambiente no arquivo `.env`, especialmente a conexão com o banco de dados (as mesmas do env do passo 3).
 11. Gere a chave de aplicativo: `docker exec app-php php artisan key:generate`
-12. Execute as migrações do banco de dados: `docker exec app-php php artisan migrate`
+12. Execute as migrações do banco de dados: `docker exec app-php php artisan migrate --seed`
 13. Acesse: `http://localhost:8180/api`
 
 ## Testes

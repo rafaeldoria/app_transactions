@@ -25,8 +25,12 @@ class UserResourceCollection extends ResourceCollection
         ];
     }
 
-    public function withResponse($response) : void
+    public function withResponse($request, $response) : void
     {
+        if(empty($request)){
+            $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+            return;
+        }
         $response->setStatusCode(Response::HTTP_OK);
     }
 }

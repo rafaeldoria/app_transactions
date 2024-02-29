@@ -3,6 +3,7 @@
 namespace App\Resources\Users;
 
 use App\Models\User;
+use Illuminate\Http\Response;
 use App\Services\ResponseService;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -39,8 +40,12 @@ class UserResource extends JsonResource
         return $this->responseService->default($this->config, $this->id, $method);
     }
 
-    public function withResponse($response)
+    public function withResponse($request, $response) : void
     {
+        if(empty($request)){
+            $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+            return;
+        }
         $response->setStatusCode($this->responseService->setStatudCode($this->config['type']));
     }
 }

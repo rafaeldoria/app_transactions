@@ -19,13 +19,11 @@ class TransactionResourceCollection extends ResourceCollection
     {
         $uri = explode("/", $request->getRequestUri());
 
-        $url = '';
+        $url = route('transaction.index');
         if(isset($uri[3])){
             $url = match ($uri[3]) {
                 'getByUser' => route('transaction.get_by_user',$uri[4])
             };
-        }else{
-            $url = route('transaction.index');
         }
         
         return [
@@ -36,8 +34,12 @@ class TransactionResourceCollection extends ResourceCollection
         ];
     }
 
-    public function withResponse($response) : void
+    public function withResponse($request, $response) : void
     {
+        if(empty($request)){
+            $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+            return;
+        }
         $response->setStatusCode(Response::HTTP_OK);
     }
 }

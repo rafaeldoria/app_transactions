@@ -36,7 +36,7 @@ Route::resource('/user', UserController::class);
 Route::resource('/document', DocumentController::class);
 Route::get('/document/getByUser/{user_id}', [DocumentController::class, 'getDocumentByUser'])->name('document.get_by_user');
 
-Route::resource('/wallet', DocumentController::class);
+Route::resource('/wallet', WalletController::class);
 Route::get('/wallet/getByUser/{user_id}', [WalletController::class, 'getWalletByUser'])->name('wallet.get_by_user');
 
 Route::resource('/transaction', TransactionController::class);

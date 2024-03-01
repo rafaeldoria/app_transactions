@@ -3,37 +3,45 @@
 namespace App\Services\Wallets;
 
 use App\Models\Wallet;
+use App\Services\Redis\RedisService;
 use Illuminate\Support\Facades\Redis;
 use App\Repositories\WalletRepository;
 
 class WalletService
 {
+    protected $redis;
+
+    public function __construct()
+    {
+        $this->redis = new RedisService();
+    }
+
     public function index()
     {
         $key = 'wallet.service.repository.index';
-        if(!Redis::exists($key) || app()->environment() === 'testing'){
+        if(!$this->redis->exists($key) || app()->environment() === 'testing'){
             
             $wallet = (new WalletRepository)->index();
-            Redis::set($key, $wallet, 'EX', 30);
+            $this->redis->set($key, $wallet, 30);
             return $wallet;
         }
-        $dataArray = json_decode(Redis::get($key), true);
+        $dataArray = json_decode($this->redis->get($key), true);
         return collect($dataArray);
     }
 
     public function show($walletId)
     {
         $key = 'wallet.service.repository.show'.$walletId;
-        if(!Redis::exists($key) || app()->environment() === 'testing'){
+        if(!$this->redis->exists($key) || app()->environment() === 'testing'){
             $wallet = (new WalletRepository)->show($walletId);
 
             if(!app()->environment() === 'testing'){
-                Redis::set($key, $wallet, 'EX', 30);
+                $this->redis->set($key, $wallet, 30);
             }
 
             return $wallet;
         }
-        $dataArray = json_decode(Redis::get($key), true);
+        $dataArray = json_decode($this->redis->get($key), true);
         return collect($dataArray);
     }
 
@@ -62,16 +70,16 @@ class WalletService
     public function getWalletByUser(int $userId)
     {
         $key = 'wallet.service.repository.getbyuser.' . $userId;
-        if(!Redis::exists($key) || app()->environment() === 'testing'){
+        if(!$this->redis->exists($key) || app()->environment() === 'testing'){
             $wallet = (new WalletRepository)->getWalletByUser($userId);
 
             if(!app()->environment() === 'testing'){
-                Redis::set($key, $wallet, 'EX', 30);
+                $this->redis->set($key, $wallet, 30);
             }
 
             return $wallet;
         }
-        $dataArray = json_decode(Redis::get($key), true);
+        $dataArray = json_decode($this->redis->get($key), true);
         return collect($dataArray);
     }
 }

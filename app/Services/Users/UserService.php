@@ -4,37 +4,47 @@ namespace App\Services\Users;
 
 use App\Models\User;
 use App\Repositories\UserRepository;
+use App\Services\Redis\RedisService;
 use Illuminate\Support\Facades\Redis;
 use App\Services\Wallets\CreateWalletService;
 
 class UserService
 {
+    protected $redis;
+
+    public function __construct()
+    {
+        $this->redis = new RedisService();
+    }
+    
     public function index()
     {
         $key = 'user.service.repository.index';
-        if(!Redis::exists($key) || app()->environment() === 'testing'){
+        if(!$this->redis->exists($key) || app()->environment() === 'testing'){
             
             $user = (new UserRepository)->index();
-            Redis::set($key, $user, 'EX', 30);
+            if(!app()->environment() === 'testing'){
+                $this->redis->set($key, $user, 30);
+            }
             return $user;
         }
-        $dataArray = json_decode(Redis::get($key), true);
+        $dataArray = json_decode($this->redis->get($key), true);
         return collect($dataArray);
     }
 
     public function show($userId)
     {
         $key = 'user.service.repository.show'.$userId;
-        if(!Redis::exists($key) || app()->environment() === 'testing'){
+        if(!$this->redis->exists($key) || app()->environment() === 'testing'){
             $user = (new UserRepository)->show($userId);
 
             if(!app()->environment() === 'testing'){
-                Redis::set($key, $user, 'EX', 30);
+                $this->redis->set($key, $user, 30);
             }
 
             return $user;
         }
-        $dataArray = json_decode(Redis::get($key), true);
+        $dataArray = json_decode($this->redis->get($key), true);
         return collect($dataArray);
     }
 

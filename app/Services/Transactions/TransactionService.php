@@ -3,21 +3,31 @@
 namespace App\Services\Transactions;
 
 use App\Models\Transaction;
+use App\Services\Redis\RedisService;
 use Illuminate\Support\Facades\Redis;
 use App\Repositories\TransactionRepository;
 
 class TransactionService
 {
+    protected $redis;
+
+    public function __construct()
+    {
+        $this->redis = new RedisService();
+    }
+    
     public function index()
     {
         $key = 'transaction.service.repository.index';
-        if(!Redis::exists($key) || app()->environment() === 'testing'){
+        if(!$this->redis->exists($key) || app()->environment() === 'testing'){
             
             $transaction = (new TransactionRepository)->index();
-            Redis::set($key, $transaction, 'EX', 20);
+            if(!app()->environment() === 'testing'){
+                $this->redis->set($key, $transaction, 20);
+            }
             return $transaction;
         }
-        $dataArray = json_decode(Redis::get($key), true);
+        $dataArray = json_decode($this->redis->get($key), true);
         return collect($dataArray);
     }
 
@@ -25,15 +35,15 @@ class TransactionService
     {
         return (new TransactionRepository)->show($transactionId);
         $key = 'transaction.service.repository.show.' . $transactionId;
-        if(!Redis::exists($key) || app()->environment() === 'testing'){
+        if(!$this->redis->exists($key) || app()->environment() === 'testing'){
             $transaction = (new TransactionRepository)->show($transactionId);
             if(!app()->environment() === 'testing'){
-                Redis::set($key, $transaction, 'EX', 30);
+                $this->redis->set($key, $transaction, 30);
             }
 
             return $transaction;
         }
-        $dataArray = json_decode(Redis::get($key), true);
+        $dataArray = json_decode($this->redis->get($key), true);
         return collect($dataArray);
     }
 
@@ -56,16 +66,16 @@ class TransactionService
     public function getTransacationByUser(int $userId)
     {
         $key = 'transaction.service.repository.getbyuser.' . $userId;
-        if(!Redis::exists($key) || app()->environment() === 'testing'){
+        if(!$this->redis->exists($key) || app()->environment() === 'testing'){
             $transaction = (new TransactionRepository)->getTransacationByUser($userId);
 
             if(!app()->environment() === 'testing'){
-                Redis::set($key, $transaction, 'EX', 30);
+                $this->redis->set($key, $transaction, 30);
             }
 
             return $transaction;
         }
-        $dataArray = json_decode(Redis::get($key), true);
+        $dataArray = json_decode($this->redis->get($key), true);
         return collect($dataArray);
     }
 }

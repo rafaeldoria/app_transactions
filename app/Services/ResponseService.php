@@ -72,6 +72,7 @@ class ResponseService
                 $error = match ($exception->errorInfo[1]) {
                     1062 => 'Duplicate value',
                     1054 => 'Column not found',
+                    1452 => 'Updating the user_id is not allowed.',
                     default => $exception->getMessage(),
                 };
             }

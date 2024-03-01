@@ -41,7 +41,7 @@ class DocumentResource extends JsonResource
             'type_description' => (new Document)->returnTypeDescriptionDocument($this->type),
             'value' => $this->value,
             'user_id' => $this->user_id,
-            'user' => $this->responseService->getUrl('user.show', $this->id)
+            'user' => $this->responseService->getUrl('user.show', $this->user_id)
         ];
     }
 

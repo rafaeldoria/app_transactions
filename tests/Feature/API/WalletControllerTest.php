@@ -30,10 +30,16 @@ class WalletControllerTest extends TestCase
                 ->assertJsonCount(1,'data')
                 ->assertSee(['user_id','amount']);
 
-        // $response->assertJson(function (AssertableJson $json){
-        //     $json->whereType('0.id', 'integer');
-        //     $json->whereType('0.amount', 'integer');
-        // });
+        $response->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'id',
+                    'user_id',
+                    'amount',
+                    'user'
+                ],
+            ],
+        ]);
     }
 
     /**

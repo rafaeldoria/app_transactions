@@ -28,12 +28,17 @@ class DocumentControllerTest extends TestCase
                 ->assertJsonCount(3, 'data')
                 ->assertSee(['id','type','value', 'user_id']);
         
-        // $response->assertJson(function (AssertableJson $json){
-        //     $json->whereType('0.id', 'integer');
-        //     $json->whereType('0.type', 'integer');
-        //     $json->whereType('0.value', 'string');
-        //     $json->whereType('0.user_id', 'integer');
-        // });
+        $response->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'id',
+                    'type',
+                    'value',
+                    'user_id',
+                    'user'
+                ],
+            ],
+        ]);
     }
 
     /**

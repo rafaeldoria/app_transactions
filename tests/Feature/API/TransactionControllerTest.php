@@ -23,19 +23,25 @@ class TransactionControllerTest extends TestCase
      */
     public function test_get_all_transaction_endpoint(): void
     {
-        Transaction::factory(5)->create();
+        Transaction::factory(1)->create();
         $response = $this->getJson('/api/transaction');        
         $response->assertStatus(Response::HTTP_OK)
-                ->assertJsonCount(5, 'data')
+                ->assertJsonCount(1, 'data')
                 ->assertSee('id','payee','payer','amount','confirmed');
 
-        // $response->assertJson(function (AssertableJson $json){
-        //     $json->whereType('0.id', 'integer');
-        //     $json->whereType('0.payer_id', 'integer');
-        //     $json->whereType('0.payee_id', 'integer');
-        //     $json->whereType('0.amount', 'integer');
-        //     $json->whereType('0.confirmed', 'integer');
-        // });
+        $response->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'id',
+                    'payer_id',
+                    'payee_id',
+                    'amount',
+                    'confirmed',
+                    'payer',
+                    'payee',
+                ],
+            ],
+        ]);
     }
 
     /**

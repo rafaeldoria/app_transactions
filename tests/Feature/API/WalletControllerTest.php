@@ -85,5 +85,24 @@ class WalletControllerTest extends TestCase
         $this->assertEquals($updatedWallet['amount'], $wallet['data']['amount']);
     }
 
+     /**
+     * Test getting an API wallet
+     * by user.
+     */
+    public function test_get_wallet_by_user_endpoint(): void
+    {
+        $userData = [
+            'name' => fake()->name(),
+            'email' => fake()->unique()->safeEmail(),
+            'email_verified_at' => now(),
+            'password' => Hash::make('987654'),
+        ];
+        $user = $this->postJson('api/user', $userData);
+        $response = $this->getJson('api/wallet/getByUser/' . $user['data']['id']);
+
+        $response->assertStatus(Response::HTTP_OK)
+                ->assertJsonStructure(['data' => ['id','amount','user_id']]);
+    }
+
     
 }

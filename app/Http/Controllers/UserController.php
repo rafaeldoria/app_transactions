@@ -18,7 +18,7 @@ class UserController extends Controller
         try {
             $users = (new UserService())->index();
         } catch (Throwable |Exception $exception) {
-            return (new ResponseService)->exception('users.index', null, $exception);
+            return (new ResponseService)->exception('user.index', null, $exception);
         }
         return new UserResourceCollection($users);
     }
@@ -31,7 +31,7 @@ class UserController extends Controller
                 throw new Exception('Not found', -404);
             }
         } catch (Throwable|Exception $exception) {
-            return (new ResponseService)->exception('users.show', $userId, $exception);
+            return (new ResponseService)->exception('user.show', $userId, $exception);
         }
         return new UserResource($user,[
             'type' => 'show',

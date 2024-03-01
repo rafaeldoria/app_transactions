@@ -24,6 +24,17 @@ class DocumentResource extends JsonResource
         if(empty($request)){
             return [];
         }
+
+        if(!$this->resource instanceof Document){
+            $dataArray = $this->resource;
+            if(!is_array($this->resource)){
+                $dataArray = json_decode($this->resource, true);
+            }
+            $this->resource = new Document();
+            $this->resource->fill($dataArray);
+            $this->resource->id = $dataArray['id'];
+        }
+
         return [
             'id' => $this->id,
             'type' => $this->type,

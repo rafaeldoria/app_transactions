@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Exception;
 use Illuminate\Http\Response;
 
 class ResponseService
@@ -54,32 +55,44 @@ class ResponseService
     }
 
     public function exception($route, $entityId, $exception){
-        $status = false;
-        $statusCode = 500;
-        $error = $exception->getMessage();
-        $url = $this->getUrl($route, $entityId);
-
-        $statusCode = match ($exception->getCode()) {
-            -401, -403, -404 => abs($exception->getCode()),
-            default => 500,
-        };
-
-
-        if(isset($exception->errorInfo[1])){
-            $error = match ($exception->errorInfo[1]) {
-                1062 => 'Duplicate value',
-                1054 => 'Column not found',
-                default => $exception->getMessage(),
+        try {
+            $status = false;
+            $statusCode = 500;
+            $error = $exception->getMessage();
+            
+            $url = $this->getUrl($route, $entityId);
+            
+            $statusCode = match ($exception->getCode()) {
+                -401, -403, -404 => abs($exception->getCode()),
+                default => Response::HTTP_INTERNAL_SERVER_ERROR,
             };
+
+            
+            if(isset($exception->errorInfo[1])){
+                $error = match ($exception->errorInfo[1]) {
+                    1062 => 'Duplicate value',
+                    1054 => 'Column not found',
+                    default => $exception->getMessage(),
+                };
+            }
+            
+
+            return response()->json([
+                'status' => $status,
+                'statusCode' => $statusCode,
+                'error' => $error,
+                'url' => $url
+            ], $statusCode);
+        } catch (\Throwable | Exception $exception) {
+            return response()->json([
+                'status' => 'false',
+                'statusCode' => Response::HTTP_INTERNAL_SERVER_ERROR,
+                'error' => $exception->getMessage(),
+                'url' => ''
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+            return $exception->getMessage();
         }
         
-
-        return response()->json([
-            'status' => $status,
-            'statusCode' => $statusCode,
-            'error' => $error,
-            'url' => $url
-        ], $statusCode);
     }
 
     public function setStatudCode($config = []){
